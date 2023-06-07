@@ -25,11 +25,11 @@ Enter mariaMariaDB as admin
 
 Create a user at 'localhost'
 
-> MariaDB> CREATE USER '\*USER\*'@'localhost' IDENTIFIED BY '\*PASSWORD\*';
+> MariaDB> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
 
 Grant all privileges to all databases to USER
 
-> MariaDB> GRANT ALL PRIVILEGES ON mydb.\* TO '\*USER\*'@'localhost';
+> MariaDB> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
 
 Initialize database
 
