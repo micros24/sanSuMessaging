@@ -70,7 +70,6 @@ module.exports = {
 
             return user;
         } catch (err) {
-            //console.log(err);
             throw new GraphQLError('CredentialsViolation', {
                 extensions: { 
                     errors: errors }
@@ -114,7 +113,6 @@ module.exports = {
 
             return user;
         } catch (err) {
-            //console.log(message);
             throw new GraphQLError('InputValidationViolation', {
                 extensions: { 
                     errors: errors }
