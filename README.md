@@ -3,17 +3,24 @@
 A simple messaging app using Apollo Server, GraphQL, React, Vite, and mariadb.
 This project was created on a linux desktop running Arch Linux 6.3.6
 This application was developed using MariaDB cli
+
+# How to Use
+
+Please replace all _italicized_ to your preference and make sure it is consistent throughout the project.
 Install MariaDB depending on your operating system
 
-Initializing MariaDB
+## Setup your config.json
+
+A sample is inside the config folder. Cater it to what you will configure in the next section.
+For the dialect field inside the sample json, you can configure it to 'mariadb' or 'mysql'. mariadb is used in the development of this project.
+
+## Initializing the database
+
+Initialize MariaDB
 
 ```
 mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 ```
-
-# How to Use
-
-Please replace all _italicized_ to your liking and make sure it is consistent with your previous entries.
 
 Start MariaDB service
 
@@ -21,15 +28,19 @@ Start MariaDB service
 
 Enter mariaMariaDB as admin
 
-> mariadb
+> sudo mariadb
+
+Create a database named sanSuDB
+
+> MariaDB [(none)]> CREATE DATABASE sanSuDB;
 
 Create a user at 'localhost'
 
-> MariaDB> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
+> MariaDB [(none)]> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
 
-Grant all privileges to all databases to USER
+Grant all privileges to all databases to _USER_
 
-> MariaDB> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
+> MariaDB [(none)]> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
 
 Initialize database
 

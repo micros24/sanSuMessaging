@@ -1,0 +1,9 @@
+{
+    "development": {
+        "username": "USER",
+        "password": "PASSWORD",
+        "database": "sanSuDB",
+        "host": "127.0.0.1",
+        "dialect": "mariadb"
+    }
+}
