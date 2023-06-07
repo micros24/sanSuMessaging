@@ -1,0 +1,22 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.7.1",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.0",
+    "mariadb": "^3.1.2",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.32.0"
+  },
+  "scripts": {
+    "start": "npx nodemon server.js & cd ./client && npm run dev"
+  },
+  "name": "sansumessaging",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
