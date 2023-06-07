@@ -17,38 +17,26 @@ Please replace all _italicized_ to your liking and make sure it is consistent wi
 
 Start MariaDB service
 
-```
-sudo systemctl start service mariadb.service
-```
+> sudo systemctl start service mariadb.service
 
-Enter mariaMariaDB admin
+Enter mariaMariaDB as admin
 
-```
-mariadb
-```
+> mariadb
 
 Create a user at 'localhost'
 
-```
-MariaDB> CREATE USER '*USER*'@'localhost' IDENTIFIED BY '*PASSWORD*';
-```
+> MariaDB> CREATE USER '\*USER\*'@'localhost' IDENTIFIED BY '\*PASSWORD\*';
 
 Grant all privileges to all databases to USER
 
-```
-MariaDB> GRANT ALL PRIVILEGES ON mydb.\* TO '*USER*'@'localhost';
-```
+> MariaDB> GRANT ALL PRIVILEGES ON mydb.\* TO '\*USER\*'@'localhost';
 
-Initialize database and copy database schema
+Initialize database
 
-```
-sequelize db:migrate
-```
+> sequelize db:migrate
 
 Start node server
 
-```
-npm start
-```
+> npm start
 
 Open your browser and navigate to localhost:5173
