@@ -1,0 +1,13 @@
+body {
+    height: 100%;
+    width: 100%;
+    background-image: url(./assets/bg.bmp);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  div.bg-form {
+    --bs-bg-opacity: .65;
+    border: 2px solid balck;
+    border-radius: 30px;
+  }
