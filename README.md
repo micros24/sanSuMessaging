@@ -28,30 +28,44 @@ mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 Start MariaDB service
 
-> sudo systemctl start service mariadb.service
+```
+sudo systemctl start service mariadb.service
+```
 
 Enter mariaMariaDB as admin
 
-> sudo mariadb
+```
+sudo mariadb
+```
 
 Create a database named sanSuDB
 
-> MariaDB [(none)]> CREATE DATABASE sanSuDB;
+```
+MariaDB [(none)]> CREATE DATABASE sanSuDB;
+```
 
 Create a user at 'localhost'
 
-> MariaDB [(none)]> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
+```
+MariaDB [(none)]> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
+```
 
 Grant all privileges to all databases to _USER_
 
-> MariaDB [(none)]> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
+```
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
+```
 
 Initialize database
 
-> sequelize db:migrate
+```
+sequelize db:migrate
+```
 
 Start node server
 
-> npm start
+```
+npm start
+```
 
 Open your browser and navigate to localhost:5173
