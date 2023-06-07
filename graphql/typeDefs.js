@@ -3,7 +3,6 @@ module.exports =
     type UserModel {
         email: String!
         firstName: String!
-        middleName: String
         lastName: String!
         profilePicture: String
         token: String
@@ -18,7 +17,6 @@ module.exports =
             password: String! 
             confirmPassword: String!
             firstName: String!
-            middleName: String!
             lastName: String!
             profilePicture: String!
         ): UserModel!

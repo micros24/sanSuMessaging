@@ -80,7 +80,7 @@ module.exports = {
   },
   Mutation: {
     register: async (_, args) => {
-        let {email, password, confirmPassword, firstName, middleName, lastName, profilePicture} = args;
+        let {email, password, confirmPassword, firstName, lastName, profilePicture} = args;
         let errors = {};
 
         try{
@@ -109,7 +109,7 @@ module.exports = {
 
             // Creatue user
             const user = await UserModel.create({
-                email, password, firstName, middleName, lastName, profilePicture
+                email, password, firstName, lastName, profilePicture
             })
 
             return user;
