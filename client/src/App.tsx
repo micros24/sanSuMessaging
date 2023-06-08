@@ -13,10 +13,9 @@ import Register from "./components/Register";
 
 function App() {
   return (
-    <div>
-      {/* <Login /> */}
+    <>
       <Register />
-    </div>
+    </>
   );
 }
 

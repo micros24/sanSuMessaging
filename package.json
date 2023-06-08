@@ -10,7 +10,7 @@
     "sequelize": "^6.32.0"
   },
   "scripts": {
-    "start": "npx nodemon server.js & cd ./client && npm run dev"
+    "start": "npx nodemon server.js --ignore client/ & cd ./client && npm run dev "
   },
   "name": "sansumessaging",
   "version": "1.0.0",

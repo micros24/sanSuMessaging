@@ -1,9 +1,36 @@
+import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
+const REGISTER_USER = gql`
+  mutation register(
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+    $firstName: String!
+    $lastName: String!
+    $profilePicture: String
+  ) {
+    register(
+      email: $email
+      password: $password
+      confirmPassword: $confirmPassword
+      firstName: $firstName
+      lastName: $lastName
+      profilePicture: $profilePicture
+    ) {
+      email
+      firstName
+      lastName
+    }
+  }
+`;
+
 export default function Register() {
+  const [validated, setValidated] = useState(false);
+  const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,20 +40,41 @@ export default function Register() {
     profilePicture: "",
   });
 
-  const submitRegisterForm = (e: FormEvent) => {
-    e.preventDefault();
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    update(_, result) {
+      console.log(result);
+    },
+    onError(error) {
+      setErrors(error.graphQLErrors[0].extensions.errors);
+    },
+    variables: formData,
+  });
 
-    console.log(formData);
+  const handleSubmitRegisterForm = (e: FormEvent) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) e.stopPropagation();
+
+    setValidated(true);
+    registerUser();
   };
 
   return (
     <div className="d-flex justify-content-center">
       <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-form">
         <h1 className="text-center">Registration</h1>
-        <Form onSubmit={submitRegisterForm}>
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit={handleSubmitRegisterForm}
+        >
           <Form.Group className="mb-3" controlId="formsEmailAddress">
-            <Form.Label>Email Address</Form.Label>
+            <Form.Label className={errors.email && "text-danger"}>
+              {errors.email ?? "Email Address"}
+            </Form.Label>
             <Form.Control
+              className={errors.email && "is-invalid"}
+              required
               type="email"
               placeholder="Email"
               value={formData.email}
@@ -37,8 +85,12 @@ export default function Register() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formsPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className={errors.password && "text-danger"}>
+              {errors.password ?? "Password"}
+            </Form.Label>
             <Form.Control
+              className={errors.password && "is-invalid"}
+              required
               type="password"
               placeholder="Password"
               value={formData.password}
@@ -49,8 +101,12 @@ export default function Register() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formsConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
+            <Form.Label className={errors.confirmPassword && "text-danger"}>
+              {errors.confirmPassword ?? "Confirm Password"}
+            </Form.Label>
             <Form.Control
+              className={errors.confirmPassword && "is-invalid"}
+              required
               type="password"
               placeholder="Confirm password"
               value={formData.confirmPassword}
@@ -61,8 +117,12 @@ export default function Register() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formsFirstName">
-            <Form.Label>First Name</Form.Label>
+            <Form.Label className={errors.firstName && "text-danger"}>
+              {errors.firstName ?? "First Name"}
+            </Form.Label>
             <Form.Control
+              className={errors.firstName && "is-invalid"}
+              required
               placeholder="First name"
               value={formData.firstName}
               onChange={(e) =>
@@ -72,8 +132,12 @@ export default function Register() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formsLastName">
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label className={errors.lastName && "text-danger"}>
+              {errors.lastName ?? "Last Name"}
+            </Form.Label>
             <Form.Control
+              className={errors.lastName && "is-invalid"}
+              required
               placeholder="Last name"
               value={formData.lastName}
               onChange={(e) =>
@@ -83,7 +147,9 @@ export default function Register() {
           </Form.Group>
 
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Profile Picture</Form.Label>
+            <Form.Label className={errors.profilePicture && "text-danger"}>
+              {errors.profilePicture ?? "Profile Picture"}
+            </Form.Label>
             <Form.Control
               type="file"
               value={formData.profilePicture}
@@ -101,6 +167,7 @@ export default function Register() {
               variant="primary"
               type="submit"
               className="w-25 btn-success"
+              disabled={loading}
             >
               Register
             </Button>
