@@ -16,7 +16,7 @@ export default function Login() {
   return (
     <div className="d-flex justify-content-center">
       <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-form">
-        <h1 className="text-centered">Login</h1>
+        <h1 className="text-center">Login</h1>
         <Form onSubmit={submitLoginForm}>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
             <Form.Label>Email address</Form.Label>
@@ -42,11 +42,17 @@ export default function Login() {
             />
           </Form.Group>
 
-          <p>Dont have an account? Register here!</p>
+          <p className="text-center">
+            Dont have an account? <a href="/register">Register here!</a>
+          </p>
 
-          <div className="d-flex justify-content-center">
-            <Button variant="primary" type="submit" className="w-25">
-              Submit
+          <div className="text-center mb-3">
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100 btn-success"
+            >
+              Log In
             </Button>
           </div>
         </Form>

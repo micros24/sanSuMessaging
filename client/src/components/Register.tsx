@@ -29,7 +29,6 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register() {
-  const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
     email: "",
@@ -52,29 +51,23 @@ export default function Register() {
 
   const handleSubmitRegisterForm = (e: FormEvent) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) e.stopPropagation();
-
-    setValidated(true);
     registerUser();
   };
 
   return (
     <div className="d-flex justify-content-center">
       <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-form">
-        <h1 className="text-center">Registration</h1>
-        <Form
-          noValidate
-          validated={validated}
-          onSubmit={handleSubmitRegisterForm}
-        >
+        <p className="text-center">
+          <h1>Registration</h1>
+          Already have an account? <a href="/">Login here!</a>
+        </p>
+        <Form noValidate onSubmit={handleSubmitRegisterForm}>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
             <Form.Label className={errors.email && "text-danger"}>
               {errors.email ?? "Email Address"}
             </Form.Label>
             <Form.Control
               className={errors.email && "is-invalid"}
-              required
               type="email"
               placeholder="Email"
               value={formData.email}
@@ -90,7 +83,6 @@ export default function Register() {
             </Form.Label>
             <Form.Control
               className={errors.password && "is-invalid"}
-              required
               type="password"
               placeholder="Password"
               value={formData.password}
@@ -106,7 +98,6 @@ export default function Register() {
             </Form.Label>
             <Form.Control
               className={errors.confirmPassword && "is-invalid"}
-              required
               type="password"
               placeholder="Confirm password"
               value={formData.confirmPassword}
@@ -122,7 +113,6 @@ export default function Register() {
             </Form.Label>
             <Form.Control
               className={errors.firstName && "is-invalid"}
-              required
               placeholder="First name"
               value={formData.firstName}
               onChange={(e) =>
@@ -137,7 +127,6 @@ export default function Register() {
             </Form.Label>
             <Form.Control
               className={errors.lastName && "is-invalid"}
-              required
               placeholder="Last name"
               value={formData.lastName}
               onChange={(e) =>
@@ -158,15 +147,15 @@ export default function Register() {
               }
             />
             <Form.Text className="text-muted">
-              You can leave this field blank if you prefer.
+              This field is optional.
             </Form.Text>
           </Form.Group>
 
-          <div className="d-flex justify-content-center">
+          <div className="text-center mb-3">
             <Button
               variant="primary"
               type="submit"
-              className="w-25 btn-success"
+              className="w-100 btn-success"
               disabled={loading}
             >
               Register

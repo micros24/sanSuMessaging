@@ -2,7 +2,7 @@ body {
     height: 100%;
     width: 100%;
     background-image: url(./assets/bg.bmp);
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: cover;
   }
 

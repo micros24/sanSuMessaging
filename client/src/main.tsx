@@ -1,7 +1,7 @@
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.js";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",

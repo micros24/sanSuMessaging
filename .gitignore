@@ -15,6 +15,7 @@ dist-ssr
 /config/config.json
 /config/env.json
 /client/src/App copy.tsx
+/client/src/ApolloProvider.js
 
 # Editor directories and files
 .vscode/*
