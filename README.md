@@ -17,6 +17,7 @@ Install MariaDB depending on your operating system
 - Samples are inside the config folder. Cater it to what you will configure in the next section.
 - For the dialect field inside the sample-config.json, you can configure it to 'mariadb' or 'mysql'. mariadb is used in the development of this project.
 - The value of JWT_TOKEN inside sample-env.json is a type of string that you can set to whatever.
+- Rename the files 'sample-config.json' to 'config.json'. and 'sample-env.json' to 'env.json'.
 
 ### Initializing the database
 
