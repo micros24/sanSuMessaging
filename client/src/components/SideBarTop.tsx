@@ -2,7 +2,7 @@ interface Props {
   onAccountClick: () => void;
 }
 
-function SideBarTop({ onAccountClick }: Props) {
+export default function SideBarTop({ onAccountClick }: Props) {
   return (
     <>
       <a href="#" className="link-light p-0 mx-3">
@@ -31,4 +31,3 @@ function SideBarTop({ onAccountClick }: Props) {
     </>
   );
 }
-export default SideBarTop;
