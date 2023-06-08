@@ -18,7 +18,7 @@ module.exports =
             confirmPassword: String!
             firstName: String!
             lastName: String!
-            profilePicture: String!
+            profilePicture: String
         ): UserModel!
     }
 `;

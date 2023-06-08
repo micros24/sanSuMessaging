@@ -21,22 +21,28 @@ module.exports = {
             // Token extraction
             if(context.req && context.req.headers.authorization) {
             const token = context.req.headers.authorization.split('Bearer ')[1];
+
             // Verify token
             jwt.verify(token, JWT_SECRET, function(err, decoded) {
                 if(err) {
                     throw new GraphQLError('Unauthenticated');
                 }
-
                 user = decoded;
               });
             }
 
+            // Query database of all users
             const users = await UserModel.findAll({
+                // Do not return user's own account
                 where: { email: { [Op.ne]: user.email }}
             });
+
             return users;
         } catch (err) {
-            throw err;
+            throw new GraphQLError('CredentialsViolation', {
+                extensions: { 
+                    errors: err }
+              });
         };
     },
     login: async (_, args) => {
@@ -65,11 +71,11 @@ module.exports = {
                 throw errors;
             }
 
-            //  
+            // Token generation
             user.token = jwt.sign({ email }, JWT_SECRET, { expiresIn: 60 * 60 }); 
 
             return user;
-        } catch (err) {
+        } catch (_) {
             throw new GraphQLError('CredentialsViolation', {
                 extensions: { 
                     errors: errors }
@@ -87,8 +93,8 @@ module.exports = {
             if(email.trim() === '') errors.email = 'Email cannot be empty';
             if(password.trim() === '') errors.password = 'Password cannot be empty';
             if(confirmPassword.trim() === '') errors.confirmPassword = 'Confirm password cannot be empty';
-            if(firstName.trim() === '') errors.confirmPassword = 'First Name cannot be empty';
-            if(lastName.trim() === '') errors.confirmPassword = 'Last Name cannot be empty';
+            if(firstName.trim() === '') errors.firstName = 'First Name cannot be empty';
+            if(lastName.trim() === '') errors.lastName = 'Last Name cannot be empty';
 
             // Check if email exists and if its valid
             if(!validateEmail(email)) errors.email = 'Email must be a valid address'; // Added for mariaDB compatibility. Not needed when using MySQL
@@ -112,11 +118,11 @@ module.exports = {
             })
 
             return user;
-        } catch (err) {
+        } catch (_) {
             throw new GraphQLError('InputValidationViolation', {
                 extensions: { 
                     errors: errors }
-              });
+            });
         }
     }
   }
