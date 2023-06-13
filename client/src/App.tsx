@@ -15,15 +15,13 @@ import MessagingLayout from "./components/MessagingLayout";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" index Component={Login} />
-          <Route path="register" Component={Register} />
-          <Route path="messaging" Component={MessagingLayout} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" index Component={Login} />
+        <Route path="register" Component={Register} />
+        <Route path="messaging" Component={MessagingLayout} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

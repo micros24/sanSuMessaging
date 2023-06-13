@@ -34,7 +34,7 @@ export default function Login() {
 
   return (
     <div className="d-flex justify-content-center">
-      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-transparent">
+      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-trans">
         <h1 className="text-center">Login</h1>
         <Form>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
