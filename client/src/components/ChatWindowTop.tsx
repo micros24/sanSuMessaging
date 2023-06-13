@@ -1,13 +1,7 @@
-import { Component } from "react";
-
-class ChatWindowTop extends Component {
-  render() {
-    return (
-      <>
-        <div className="">ChatWindowTop 1</div>
-      </>
-    );
-  }
+export default function ChatWindowTop() {
+  return (
+    <div>
+      <div className="text-center text-white">INSERT USER'S NAME HERE</div>
+    </div>
+  );
 }
-
-export default ChatWindowTop;

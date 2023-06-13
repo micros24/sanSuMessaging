@@ -6,12 +6,12 @@
 
 export default function SideBarTop() {
   return (
-    <>
-      <a href="#" className="link-light p-0 mx-3">
+    <div>
+      <a href="#" className="link-light mx-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="25"
-          height="25"
+          width="20"
+          height="20"
           fill="currentColor"
           className="bi bi-person-circle"
           viewBox="0 0 16 16"
@@ -29,6 +29,6 @@ export default function SideBarTop() {
       >
         Account Name
       </a>
-    </>
+    </div>
   );
 }
