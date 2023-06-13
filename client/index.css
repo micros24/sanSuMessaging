@@ -6,7 +6,7 @@ body {
     background-size: cover;
   }
 
-  div.bg-form {
+  div.bg-transparent {
     --bs-bg-opacity: .65;
     border: 2px solid balck;
     border-radius: 30px;

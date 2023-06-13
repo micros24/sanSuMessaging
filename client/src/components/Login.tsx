@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -24,15 +24,6 @@ export default function Login() {
     password: "",
   });
 
-  // const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
-  //   onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
-  //   onCompleted(data) {
-  //     localStorage.setItem("token", data.login.token);
-  //     navigate("messaging"); // Redirect to Messages
-  //   },
-  //   variables: formData,
-  // });
-
   const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
@@ -41,14 +32,9 @@ export default function Login() {
     },
   });
 
-  const handleSubmitLoginForm = (e: FormEvent) => {
-    e.preventDefault();
-    getUser();
-  };
-
   return (
     <div className="d-flex justify-content-center">
-      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-form">
+      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-transparent">
         <h1 className="text-center">Login</h1>
         <Form>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
