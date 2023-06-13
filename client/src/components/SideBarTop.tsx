@@ -1,8 +1,10 @@
-interface Props {
-  onAccountClick: () => void;
-}
+// interface Props {
+//   onAccountClick: () => void;
+// }
+// { onAccountClick }: Props
+// onClick={onAccountClick}
 
-export default function SideBarTop({ onAccountClick }: Props) {
+export default function SideBarTop() {
   return (
     <>
       <a href="#" className="link-light p-0 mx-3">
@@ -23,7 +25,6 @@ export default function SideBarTop({ onAccountClick }: Props) {
       </a>
       <a
         href="#"
-        onClick={onAccountClick}
         className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
       >
         Account Name

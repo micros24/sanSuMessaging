@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -29,6 +30,7 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register() {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
     email: "",
@@ -40,12 +42,8 @@ export default function Register() {
   });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
-      console.log(result);
-    },
-    onError(error) {
-      setErrors(error.graphQLErrors[0].extensions.errors);
-    },
+    update: (_, __) => navigate("/"), // Redirect to Login
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     variables: formData,
   });
 
@@ -59,9 +57,9 @@ export default function Register() {
       <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-form">
         <p className="text-center">
           <h1>Registration</h1>
-          Already have an account? <a href="/">Login here!</a>
+          Already have an account? <Link to="/">Login here!</Link>
         </p>
-        <Form noValidate onSubmit={handleSubmitRegisterForm}>
+        <Form onSubmit={handleSubmitRegisterForm}>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
             <Form.Label className={errors.email && "text-danger"}>
               {errors.email ?? "Email Address"}

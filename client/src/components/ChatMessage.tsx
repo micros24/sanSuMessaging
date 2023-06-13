@@ -1,8 +1,9 @@
-interface Props {
-  onSend: () => void;
-}
+// interface Props {
+//   onSend: () => void;
+// }
+// { onSend }: Props
 
-function ChatMessage({ onSend }: Props) {
+function ChatMessage() {
   return (
     <div>
       <div className="input-group mb-3">
@@ -15,7 +16,7 @@ function ChatMessage({ onSend }: Props) {
           aria-describedby="btnSend"
           onKeyDown={(event) => {
             if (event.key === "Enter") {
-              onSend();
+              // onSend();
             }
           }}
         />
@@ -24,7 +25,7 @@ function ChatMessage({ onSend }: Props) {
           type="button"
           id="btnSend"
           onClick={() => {
-            onSend();
+            // onSend();
           }}
         >
           Send
