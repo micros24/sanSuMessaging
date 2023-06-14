@@ -9,6 +9,7 @@ module.exports = async (UserModel, { to, content }, user) => {
         if(content.trim() === '') throw new GraphQLError('Message cannot be empty');
         const recipient = await UserModel.findOne({ where: { email: to }});
         if(!recipient) throw new GraphQLError('Recipient is not registered');
+        else if(recipient.email === user.user.email) throw new GraphQLError('You cannot message yourself');
 
         const message = await MessageModel.create({
             from: user.user.email,
