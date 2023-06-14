@@ -6,6 +6,9 @@ const getMessagesProvider = require('./queries/getMessages');
 const { UserModel } = require('../models');
 
 module.exports = {
+    MessageModel: {
+        createdAt: (parent) => parent.createdAt.toISOString(),
+    },
     Query: {
         getUsers: (_, __, { user }) => {
             return getUsersProvider(UserModel, user);
