@@ -5,10 +5,6 @@ const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
 const { UserModel } = require('../models');
 
-const { Op } = require("sequelize");
-const { GraphQLError } = require ('graphql');
-const { MessageModel } = require('../models');
-
 module.exports = {
     Query: {
         getUsers: (_, __, { user }) => {
