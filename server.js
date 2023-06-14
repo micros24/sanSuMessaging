@@ -3,8 +3,9 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import pkg1 from './models/index.js';
 import resolversProvider from './graphql/resolvers.js'
 import typeDefsProvider from './graphql/typeDefs.js'
-const { sequelize } = pkg1;
+import contextMiddleware from './utils/contextMiddleware.js';
 
+const { sequelize } = pkg1;
 const typeDefs = typeDefsProvider;  // The GraphQL schema
 const resolvers = resolversProvider; // A map of functions which return data for the schema.
 
@@ -14,7 +15,7 @@ const server = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(server, {
-  context: (ctx) => ctx
+  context: contextMiddleware
 });
 console.log(`🚀 Server ready at ${url}`);
 
