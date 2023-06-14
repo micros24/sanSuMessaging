@@ -16,7 +16,6 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
-        notEmpty: true,
         // Validate does not work in mariaDB, adding it in case of MySQL implementation
         validate: {
           isEmail: {
@@ -28,17 +27,14 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
-        notEmpty: true
       },
       firstName: {
         type: Sequelize.STRING,
         allowNull: false,
-        notEmpty: true
       },
       lastName: {
         type: Sequelize.STRING,
         allowNull: false,
-        notEmpty: true
       },
       profilePicture: {
         type: Sequelize.STRING,
