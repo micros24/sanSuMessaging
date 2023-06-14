@@ -7,6 +7,13 @@ module.exports =
         profilePicture: String
         token: String
     }
+    type MessageModel {
+        uuid: String!
+        to: String!
+        from: String!
+        content: String!
+        createdAt: String!
+    }
     type Query {
         getUsers: [UserModel]!
         login(email: String!, password: String!): UserModel!
@@ -20,5 +27,9 @@ module.exports =
             lastName: String!
             profilePicture: String
         ): UserModel!
+        sendMessage(
+            to: String!
+            content: String!
+        ): MessageModel!
     }
 `;
