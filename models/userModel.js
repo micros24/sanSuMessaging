@@ -33,8 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-  },
-  {
+  }, {
     sequelize,
     modelName: 'UserModel',
     tableName: 'users'

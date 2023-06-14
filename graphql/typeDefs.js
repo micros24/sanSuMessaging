@@ -17,6 +17,7 @@ module.exports =
     type Query {
         getUsers: [UserModel]!
         login(email: String!, password: String!): UserModel!
+        getMessages(from: String!): [MessageModel]!
     }
     type Mutation {
         register(
