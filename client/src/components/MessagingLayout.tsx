@@ -3,16 +3,23 @@ import SideBarTop from "./SideBarTop";
 import ChatMessage from "./ChatMessage";
 import ChatWindow from "./ChatWindow";
 import ChatWindowTop from "./ChatWindowTop";
+import AccountModal from "./modals/AccountModal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 export default function MessagingLayout() {
+  const handleAccountClick = () => {
+    const accountModal = document.getElementById("btnShowAccountModal");
+    accountModal?.click();
+  };
+
   return (
     <div className="vh-100">
       <Row>
         <Col className="col-2">
           <Row className="mt-3">
-            <SideBarTop />
+            <AccountModal />
+            <SideBarTop onAccountClick={handleAccountClick} />
           </Row>
           <Row
             className="overflow-auto col-2 mx-0"
