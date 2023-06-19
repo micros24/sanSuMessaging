@@ -17,7 +17,7 @@ module.exports = async (UserModel, args) => {
             }
 
             // Get user data
-            let user = await UserModel.findOne({ where: {email}});
+            const user = await UserModel.findOne({ where: {email}});
 
             // Check if account exists
             if(user === null) {
@@ -29,8 +29,15 @@ module.exports = async (UserModel, args) => {
                 throw errors;
             }
 
+            let tokenData = {
+                email: user.dataValues.email,
+                firstName: user.dataValues.firstName,
+                lastName: user.dataValues.lastName,
+                profilePicture: user.dataValues.profilePicture
+            }
+
             // Token generation
-            user.token = jwt.sign({ email }, JWT_SECRET, { expiresIn: 60 * 60 }); 
+            user.token = jwt.sign(tokenData, JWT_SECRET, { expiresIn: 60 * 60 }); 
 
             return user;
         } catch (_) {
