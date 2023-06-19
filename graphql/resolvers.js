@@ -3,6 +3,7 @@ const sendMessageProvider = require('./mutations/sendMessage');
 const loginProvider = require('./queries/login');
 const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
+const getFriendsProvider = require('./queries/getFriends');
 const { UserModel } = require('../models');
 
 module.exports = {
@@ -12,6 +13,9 @@ module.exports = {
     Query: {
         getUsers: (_, __, { user }) => {
             return getUsersProvider(UserModel, user);
+        },
+        getFriends: (_, __, { user }) => {
+            return getFriendsProvider(UserModel, user);
         },
         getMessages: (_, { from }, { user }) => {
             return getMessagesProvider(UserModel, from, user);

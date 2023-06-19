@@ -1,4 +1,21 @@
+import React from "react";
+import { gql, useQuery } from "@apollo/client";
+import { useAuthDispatch } from "../context/auth";
+
+const GET_USERS = gql`
+  query getFriends {
+    getUsers {
+      email
+      firstName
+      lastName
+      profilePicture
+    }
+  }
+`;
+
 export default function ChatWindow() {
+  const dispatch = useAuthDispatch();
+
   return (
     <div>
       <p>123</p>
