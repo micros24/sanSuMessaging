@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { useAuthDispatch } from "../context/auth";
 
 const LOGIN_USER = gql`
   query login($email: String!, $password: String!) {
@@ -19,6 +20,7 @@ const LOGIN_USER = gql`
 export default function Login() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
+  const dispatch = useAuthDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,7 +29,7 @@ export default function Login() {
   const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
-      localStorage.setItem("token", data.login.token);
+      dispatch({ type: "LOGIN", payload: data.login });
       navigate("messaging"); // Redirect to Messages
     },
   });
