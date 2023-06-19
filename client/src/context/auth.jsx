@@ -7,7 +7,6 @@ let user;
 
 if(token) {
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
     const expiresAt = new Date(decodedToken.exp * 1000);
 
     if(new Date() > expiresAt) {
