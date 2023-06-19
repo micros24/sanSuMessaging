@@ -14,10 +14,16 @@ module.exports =
         content: String!
         createdAt: String!
     }
+    type FriendsModel {
+        uuid: String!
+        email1: String!
+        email2: String!
+    }
     type Query {
         getUsers: [UserModel]!
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
+        getFriends: [FriendsModel]!
     }
     type Mutation {
         register(

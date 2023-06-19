@@ -18,9 +18,9 @@ const LOGIN_USER = gql`
 `;
 
 export default function Login() {
+  const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
-  const dispatch = useAuthDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
