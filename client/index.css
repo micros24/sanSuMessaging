@@ -4,10 +4,10 @@ body {
     background-image: url(./assets/bg.bmp);
     background-repeat: repeat-y;
     background-size: cover;
-  }
+}
 
-  div.bg-trans {
-    --bs-bg-opacity: .70;
-    /* border: 2px solid black; */
-    border-radius: 30px;
-  }
+div.bg-trans {
+  --bs-bg-opacity: .70;
+  /* border: 2px solid black; */
+  border-radius: 30px;
+}

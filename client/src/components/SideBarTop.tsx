@@ -5,7 +5,7 @@ interface Props {
 export default function SideBarTop({ onAccountClick }: Props) {
   return (
     <div>
-      <a href="#" className="link-light mx-3">
+      <a href="#" className="link-light mx-3" onClick={onAccountClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -26,7 +26,7 @@ export default function SideBarTop({ onAccountClick }: Props) {
         className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
         onClick={onAccountClick}
       >
-        Account Name
+        TODO:AccountName
       </a>
     </div>
   );
