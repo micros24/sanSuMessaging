@@ -4,6 +4,7 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MessagingLayout from "./components/MessagingLayout";
+import AddAFriend from "./components/AddAFriend";
 import { AuthProvider, useAuthState } from "./context/auth";
 // import DynamicRoute from "./utils/DynamicRoute";
 
@@ -34,10 +35,10 @@ export default function App() {
               authenticated
             />
             <DynamicRoute path="/" index Component={Login} guest /> */}
-
+          <Route path="/" index Component={Login} />
           <Route path="register" Component={Register} />
           <Route path="messaging" Component={MessagingLayout} />
-          <Route path="/" index Component={Login} />
+          <Route path="addFriend" Component={AddAFriend} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -15,9 +15,10 @@ import { Col } from "react-bootstrap";
 //   }
 // `;
 
+// TODO: Remove temporary data when AddAFriend component is complete
 const GET_USERS = gql`
-  query getUsers {
-    getUsers {
+  query getUsersTemp {
+    getUsersTemp {
       email
       firstName
       lastName
@@ -43,10 +44,10 @@ export default function ChatWindow() {
   let friendsMarkup;
   if (!data || loading) {
     friendsMarkup = <p>Loading...</p>;
-  } else if (data.getUsers.length === 0) {
+  } else if (data.getUsersTemp.length === 0) {
     friendsMarkup = <p>Add some friends to start chatting :)</p>;
-  } else if (data.getUsers.length > 0) {
-    friendsMarkup = data.getUsers.map((user) => (
+  } else if (data.getUsersTemp.length > 0) {
+    friendsMarkup = data.getUsersTemp.map((user) => (
       <div key={user.email}>
         <p>{user.email}</p>
       </div>

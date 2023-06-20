@@ -1,14 +1,15 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useAuthDispatch } from "../../context/auth";
-import { useNavigate } from "react-router-dom";
+import { useAuthDispatch, useAuthState } from "../../context/auth";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function AccountModal() {
   const [show, setShow] = useState(false);
+  const dispatch = useAuthDispatch();
+  const user = useAuthState().user;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const dispatch = useAuthDispatch();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
@@ -16,7 +17,10 @@ export default function AccountModal() {
     navigate("/"); // Redirect to Login
   };
 
-  const handleAddFriend = () => {};
+  const handleAddFriend = (e) => {
+    e.preventDefault();
+    navigate("/addFriend");
+  };
 
   const footerOverride = {
     justifyContent: "space-between",
@@ -41,12 +45,33 @@ export default function AccountModal() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            TODO: Put currently logged-in user's name here
+            {user.firstName} {user.lastName}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="text-center">
+          <p>
+            <Link to="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="150"
+                height="150"
+                fill="currentColor"
+                className="bi bi-person-circle"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fillRule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+            </Link>
+          </p>
           <p>TODO: Put profile picture editing</p>
-          <p>TODO: Put profile editing textboxes and functions</p>
+          <p>123123</p>
+          <p>123123</p>
+          <p>123123</p>
+          <p>123123</p>
         </Modal.Body>
         <Modal.Footer style={footerOverride}>
           <div>
@@ -60,13 +85,6 @@ export default function AccountModal() {
             </Button>
           </div>
           <div>
-            {/* <Button
-              variant="secondary"
-              style={{ marginRight: "15px" }}
-              onClick={handleClose}
-            >
-              Close
-            </Button> */}
             <Button variant="primary" onClick={handleClose}>
               Save changes
             </Button>

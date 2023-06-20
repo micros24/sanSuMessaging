@@ -20,7 +20,8 @@ module.exports =
         email2: String!
     }
     type Query {
-        getUsers: [UserModel]!
+        getUsersTemp: [UserModel]! # TODO: TEMP ONLY
+        getUsers(name: String!): [UserModel]!
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!

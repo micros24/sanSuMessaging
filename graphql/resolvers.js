@@ -2,6 +2,7 @@ const registerProvider = require('./mutations/register');
 const sendMessageProvider = require('./mutations/sendMessage');
 const loginProvider = require('./queries/login');
 const getUsersProvider = require('./queries/getUsers');
+const getUsersTempProvider = require('./queries/getUsersTemp');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const { UserModel } = require('../models');
@@ -11,8 +12,12 @@ module.exports = {
         createdAt: (parent) => parent.createdAt.toISOString(),
     },
     Query: {
-        getUsers: (_, __, { user }) => {
-            return getUsersProvider(UserModel, user);
+        // TODO: TEMP ONLY
+        getUsersTemp: (_, __, { user }) => {
+            return getUsersTempProvider(UserModel, user);
+        },
+        getUsers: (_, { name }, { user }) => {
+            return getUsersProvider(UserModel, name, user);
         },
         getFriends: (_, __, { user }) => {
             return getFriendsProvider(UserModel, user);
