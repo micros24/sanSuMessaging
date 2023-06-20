@@ -1,6 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useAuthState } from "../context/auth";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -30,6 +31,12 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register() {
+  // workaround route guard
+  const user = useAuthState().user;
+  if (user) {
+    return <Navigate to="messaging" />;
+  }
+
   const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({

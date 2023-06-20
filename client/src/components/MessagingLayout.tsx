@@ -4,10 +4,18 @@ import ChatMessage from "./ChatMessage";
 import ChatWindow from "./ChatWindow";
 import ChatWindowTop from "./ChatWindowTop";
 import AccountModal from "./modals/AccountModal";
+import { useAuthState } from "../context/auth";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Navigate } from "react-router-dom";
 
 export default function MessagingLayout() {
+  // workaround route guard
+  const user = useAuthState().user;
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
   const handleAccountClick = () => {
     const accountModal = document.getElementById("btnShowAccountModal");
     accountModal?.click();

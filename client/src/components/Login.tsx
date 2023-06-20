@@ -1,10 +1,10 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { useAuthDispatch } from "../context/auth";
+import { useAuthDispatch, useAuthState } from "../context/auth";
 
 const LOGIN_USER = gql`
   query login($email: String!, $password: String!) {
@@ -18,6 +18,12 @@ const LOGIN_USER = gql`
 `;
 
 export default function Login() {
+  // workaround route guard
+  const user = useAuthState().user;
+  if (user) {
+    return <Navigate to="messaging" />;
+  }
+
   const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
