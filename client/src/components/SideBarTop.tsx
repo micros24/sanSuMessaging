@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
+import { useAuthState } from "../context/auth";
 
 interface Props {
   onAccountClick: () => void;
 }
 
 export default function SideBarTop({ onAccountClick }: Props) {
+  const user = useAuthState().user;
+
   return (
     <div>
       <Link to="#" className="link-light mx-3" onClick={onAccountClick}>
@@ -28,7 +31,7 @@ export default function SideBarTop({ onAccountClick }: Props) {
         className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
         onClick={onAccountClick}
       >
-        TODO:AccountName
+        {user.firstName} {user.lastName}
       </Link>
     </div>
   );

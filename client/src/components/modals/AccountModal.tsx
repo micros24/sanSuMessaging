@@ -16,6 +16,8 @@ export default function AccountModal() {
     navigate("/"); // Redirect to Login
   };
 
+  const handleAddFriend = () => {};
+
   const footerOverride = {
     justifyContent: "space-between",
   };
@@ -53,13 +55,18 @@ export default function AccountModal() {
             </Button>
           </div>
           <div>
-            <Button
+            <Button variant="success" onClick={handleAddFriend}>
+              Add a friend
+            </Button>
+          </div>
+          <div>
+            {/* <Button
               variant="secondary"
               style={{ marginRight: "15px" }}
               onClick={handleClose}
             >
               Close
-            </Button>
+            </Button> */}
             <Button variant="primary" onClick={handleClose}>
               Save changes
             </Button>

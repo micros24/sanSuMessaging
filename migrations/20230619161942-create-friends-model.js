@@ -12,12 +12,14 @@ module.exports = {
       email1: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        unique: false
+        unique: false,
+        references: { model: 'users', key: 'email' }
       },
       email2: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        unique: false
+        unique: false,
+        references: { model: 'users', key: 'email' }
       },
       friendsSince: {
         allowNull: false,
