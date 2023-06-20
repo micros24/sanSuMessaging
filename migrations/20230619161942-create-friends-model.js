@@ -21,7 +21,11 @@ module.exports = {
         unique: false,
         references: { model: 'users', key: 'email' }
       },
-      friendsSince: {
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
