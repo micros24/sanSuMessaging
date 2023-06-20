@@ -5,6 +5,7 @@ const getUsersProvider = require('./queries/getUsers');
 const getUsersTempProvider = require('./queries/getUsersTemp');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
+const getRequestsProvider = require('./queries/getRequests');
 const { UserModel } = require('../models');
 
 module.exports = {
@@ -27,6 +28,9 @@ module.exports = {
         },
         login: (_, args) => {
             return loginProvider(UserModel, args);
+        },
+        getRequests: (_, __, { user }) => {
+            return getRequestsProvider(user);
         }
   },
   Mutation: {

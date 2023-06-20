@@ -13,13 +13,13 @@ function hasWhiteSpace(s) {
 }
 
 module.exports = async (UserModel, name, user) => {
-    // Validation
-    if(!user) throw new GraphQLError('Unauthenticated');
-    if(name.trim() === '') {
-        throw "The name cannot be empty!";
-    }
-
         try {
+            // Validation
+            if(!user) throw new GraphQLError('Unauthenticated');
+            if(name.trim() === '') {
+                throw "The name cannot be empty!";
+            }
+
             let users;
             if(validateEmail(name)) {
                 // Input is an email address
@@ -41,6 +41,7 @@ module.exports = async (UserModel, name, user) => {
                     }
                 } else {
                     // Input is a string with no spaces
+                    // Check if its' a first name
                     names.push(name);
 
                     users = await UserModel.findAll({
@@ -51,7 +52,8 @@ module.exports = async (UserModel, name, user) => {
                          order: [['createdAt', 'DESC']]
                     });
 
-                    if(!users.dataValues) {
+                    // Check if its' a last name
+                    if(!users[0]) {
                         users = await UserModel.findAll({
                             where: { 
                                 email: { [Op.ne]: user.email },
@@ -63,14 +65,16 @@ module.exports = async (UserModel, name, user) => {
                 }
             }
 
+            // User is not registered
+            if(!users[0]) throw "A person with that name/email is not registered.";
+
             return users;
         } catch (err) {
-            if(typeof(err) === String) {
+            if(typeof(err) === "string") {
                 throw new GraphQLError('InputValidationViolation', {
                     extensions: { 
                         errors: err }
                 });
-            }
-            else throw err;
+            } else throw err;
         };
 };
