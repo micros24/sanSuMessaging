@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FRIEND_REQUESTS = gql`
   query getFriendRequests {
@@ -40,8 +42,11 @@ interface Props {
 let users;
 export default function NotificationsModal({ isNewLogin }: Props) {
   const [show, setShow] = useState(false);
+  const [toastText, setToastText] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const showToastonClick = document.getElementById("btnShowToast");
+  const notify = () => toast(toastText);
   const [data, setData] = useState({
     sender: "",
   });
@@ -74,19 +79,29 @@ export default function NotificationsModal({ isNewLogin }: Props) {
     e.preventDefault();
     document.getElementById(e.currentTarget.id)?.setAttribute("hidden", "");
     deleteFriendRequest();
+    showToastonClick?.click();
+    notify();
   };
 
   const handleAddFriend = (e: FormEvent) => {
     e.preventDefault();
     addFriend();
     deleteFriendRequest();
+    notify();
   };
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        newestOnTop={false}
+        hideProgressBar={true}
+        theme="colored"
+        closeOnClick
+      />
       <Button
         id="btnShowFriendRequestsModal"
-        variant="primary"
         onClick={handleShow}
         hidden
       ></Button>
@@ -108,6 +123,7 @@ export default function NotificationsModal({ isNewLogin }: Props) {
                         type="submit"
                         onClick={() => {
                           setData({ sender: user.sender });
+                          setToastText("Friend request ignored");
                         }}
                       >
                         Ignore
@@ -120,6 +136,7 @@ export default function NotificationsModal({ isNewLogin }: Props) {
                         type="submit"
                         onClick={() => {
                           setData({ sender: user.sender });
+                          setToastText("Friend added!");
                         }}
                       >
                         Accept request
