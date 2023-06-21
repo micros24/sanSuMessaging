@@ -13,8 +13,8 @@ export default function SideBarTop({ onAccountClick }: Props) {
       <Link to="#" className="link-light mx-3" onClick={onAccountClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="30"
+          height="30"
           fill="currentColor"
           className="bi bi-person-circle"
           viewBox="0 0 16 16"

@@ -3,7 +3,7 @@ const { FriendRequestModel } = require('../../models');
 
 module.exports = async (UserModel, formData, user) => {
     let { recipient, sender } = formData;
-    sender = user.user.email;
+    sender = user.email;
 
     try {
         // TODO: Add validation not to send into same user

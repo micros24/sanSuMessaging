@@ -6,7 +6,7 @@ const getUsersProvider = require('./queries/getUsers');
 const getUsersTempProvider = require('./queries/getUsersTemp');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
-// const getRequestsProvider = require('./queries/getRequests');
+const getFriendRequestsProvider = require('./queries/getFriendRequests');
 const { UserModel } = require('../models');
 
 module.exports = {
@@ -30,18 +30,18 @@ module.exports = {
         login: (_, args) => {
             return loginProvider(UserModel, args);
         },
-        // getRequests: (_, __, { user }) => {
-        //     return getRequestsProvider(user);
-        // }
+        getFriendRequests: (_, __, { user }) => {
+            return getFriendRequestsProvider(user);
+        }
   },
   Mutation: {
     register: (_, formData) => {
         return registerProvider(UserModel, formData);
     },
-    sendMessage: (_, { to, content } , user) => {
+    sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user);
     },
-    sendFriendRequest: (_, formData, user) => {
+    sendFriendRequest: (_, formData, { user }) => {
         return sendFriendRequestProvider(UserModel, formData, user);
     }
   }

@@ -3,6 +3,7 @@ import SideBarTop from "./SideBarTop";
 import ChatMessage from "./ChatMessage";
 import ChatWindow from "./ChatWindow";
 import ChatWindowTop from "./ChatWindowTop";
+import Notifications from "./Notifications";
 import AccountModal from "./modals/AccountModal";
 import { useAuthState } from "../context/auth";
 import Row from "react-bootstrap/Row";
@@ -23,6 +24,7 @@ export default function MessagingLayout() {
 
   return (
     <div className="vh-100">
+      <Notifications isNewLogin={true} />
       <Row>
         <Col className="col-2">
           <Row className="mt-3">
@@ -55,7 +57,7 @@ export default function MessagingLayout() {
           <Row
             style={{
               position: "absolute",
-              bottom: "2%",
+              bottom: "1%",
               width: "80%",
               marginLeft: "1%",
             }}

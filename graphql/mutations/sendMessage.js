@@ -12,7 +12,7 @@ module.exports = async (UserModel, { to, content }, user) => {
         else if(recipient.email === user.user.email) throw new GraphQLError('You cannot message yourself');
 
         const message = await MessageModel.create({
-            from: user.user.email,
+            from: user.email,
             to,
             content
         });

@@ -30,6 +30,7 @@ module.exports =
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!
+        getFriendRequests: [FriendRequestModel]!
     }
     type Mutation {
         register(
