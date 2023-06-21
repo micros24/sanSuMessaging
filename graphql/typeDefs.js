@@ -23,6 +23,9 @@ module.exports =
         uuid: String!
         sender: String!
         recipient: String!
+        senderFirstName: String!
+        senderLastName: String!
+        senderProfilePicture: String
     }
     type Query {
         getUsersTemp: [UserModel]! # TODO: TEMP ONLY
@@ -46,8 +49,11 @@ module.exports =
             content: String!
         ): MessageModel!
         sendFriendRequest(
-            sender: String!
+            sender: String
             recipient: String!
+            senderFirstName: String
+            senderLastName: String
+            senderProfilePicture: String
         ): FriendRequestModel!
     }
 `;

@@ -25,7 +25,7 @@ module.exports = async (UserModel, name, user) => {
                 // Input is an email address
                 users = await UserModel.findAll({
                     where: { 
-                        email: { [Op.ne]: name }
+                        email: name
                      }
                 });
             } else {

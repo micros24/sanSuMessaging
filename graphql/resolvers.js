@@ -41,8 +41,8 @@ module.exports = {
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user);
     },
-    sendFriendRequest: (_, formData, { user }) => {
-        return sendFriendRequestProvider(UserModel, formData, user);
+    sendFriendRequest: (_, { recipient }, { user }) => {
+        return sendFriendRequestProvider(UserModel, recipient, user);
     }
   }
 }

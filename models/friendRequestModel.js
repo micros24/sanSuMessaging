@@ -27,7 +27,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: false
-    }
+    },
+    senderFirstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    senderLastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    senderProfilePicture: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, {
     sequelize,
     modelName: 'FriendRequestModel',

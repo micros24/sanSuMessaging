@@ -13,9 +13,13 @@ const FRIEND_REQUESTS = gql`
 
 interface Props {
   isNewLogin: boolean;
+  onFriendRequestsClick: () => void; // show modal
 }
 
-export default function Notifications({ isNewLogin }: Props) {
+export default function Notifications({
+  isNewLogin,
+  onFriendRequestsClick,
+}: Props) {
   const [notificationCount, setNotificationCount] = useState(0);
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {
@@ -25,14 +29,15 @@ export default function Notifications({ isNewLogin }: Props) {
     },
   });
   if (isNewLogin === true) {
+    // re-render
     refetch();
   }
 
   return (
     <Button
-      type="button"
       variant="link"
       className="text-white d-flex justify-content-center align-items-center bg-transparent link-underline link-underline-opacity-0 "
+      onClick={onFriendRequestsClick}
       style={{ position: "absolute", right: "0", margin: "0.5%" }}
     >
       <svg

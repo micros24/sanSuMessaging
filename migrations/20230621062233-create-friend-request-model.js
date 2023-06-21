@@ -27,6 +27,18 @@ module.exports = {
         unique: false,
         references: { model: 'users', key: 'email' }
       },
+      senderFirstName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      senderLastName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      senderProfilePicture: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

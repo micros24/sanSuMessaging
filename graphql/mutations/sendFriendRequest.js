@@ -1,10 +1,7 @@
 const { GraphQLError } = require('graphql');
 const { FriendRequestModel } = require('../../models');
 
-module.exports = async (UserModel, formData, user) => {
-    let { recipient, sender } = formData;
-    sender = user.email;
-
+module.exports = async (UserModel, recipient, user) => {
     try {
         // TODO: Add validation not to send into same user
         // Validation
@@ -14,8 +11,11 @@ module.exports = async (UserModel, formData, user) => {
         if(!sentTo) throw new GraphQLError('Recipient is not registered');
 
         const friendRequest = await FriendRequestModel.create({
-            sender: sender,
-            recipient: recipient
+            sender: user.email,
+            recipient: recipient,
+            senderFirstName: user.firstName,
+            senderLastName: user.lastName,
+            senderProfilePicture: user.profilePicture
         });
 
         return friendRequest;

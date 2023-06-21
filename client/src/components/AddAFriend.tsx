@@ -21,9 +21,8 @@ const GET_USERS = gql`
 `;
 
 const SEND_FRIEND_REQUEST = gql`
-  mutation sendFriendRequest($sender: String!, $recipient: String!) {
-    sendFriendRequest(sender: $sender, recipient: $recipient) {
-      sender
+  mutation sendFriendRequest($recipient: String!) {
+    sendFriendRequest(recipient: $recipient) {
       recipient
     }
   }
@@ -48,7 +47,6 @@ export default function AddAFriend() {
   });
 
   const [formData, setFormData] = useState({
-    sender: "",
     recipient: "",
   });
 
@@ -160,7 +158,7 @@ export default function AddAFriend() {
                 ))
               ) : (
                 <span className="text-center">
-                  Frined search will appear here.
+                  Friend search will appear here.
                 </span>
               )}
             </ListGroup>

@@ -23,11 +23,21 @@ export default function MessagingLayout() {
     accountModal?.click();
   };
 
+  const handleFriendRequestsClick = () => {
+    const friendRequestsModal = document.getElementById(
+      "btnShowFriendRequestsModal"
+    );
+    friendRequestsModal?.click();
+  };
+
   return (
     <div className="vh-100">
-      <FriendRequestsModal />
+      <FriendRequestsModal isNewLogin={true} />
       <AccountModal />
-      <FriendRequests isNewLogin={true} />
+      <FriendRequests
+        isNewLogin={true}
+        onFriendRequestsClick={handleFriendRequestsClick}
+      />
       <Row>
         <Col className="col-2">
           <Row className="mt-3">
