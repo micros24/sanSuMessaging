@@ -4,7 +4,11 @@ import Modal from "react-bootstrap/Modal";
 import { useAuthDispatch, useAuthState } from "../../context/auth";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function AccountModal() {
+interface Props {
+  showAddAFriendButton?: boolean;
+}
+
+export default function AccountModal({ showAddAFriendButton }: Props) {
   const [show, setShow] = useState(false);
   const dispatch = useAuthDispatch();
   const user = useAuthState().user;
@@ -34,7 +38,6 @@ export default function AccountModal() {
         onClick={handleShow}
         hidden
       ></Button>
-
       <Modal
         size="lg"
         show={show}
@@ -80,7 +83,11 @@ export default function AccountModal() {
             </Button>
           </div>
           <div>
-            <Button variant="success" onClick={handleAddFriend}>
+            <Button
+              variant="success"
+              onClick={handleAddFriend}
+              hidden={showAddAFriendButton}
+            >
               Add a friend
             </Button>
           </div>
