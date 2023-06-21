@@ -16,8 +16,8 @@ module.exports =
     }
     type FriendsModel {
         uuid: String!
-        email1: String!
-        email2: String!
+        sender: String!
+        recipient: String!
     }
     type FriendRequestModel {
         uuid: String!
@@ -46,8 +46,7 @@ module.exports =
         ): UserModel!
         addFriend(
             sender: String!
-            recipient: String!
-        ): FriendsModel!
+        ): FriendsModel
         sendMessage(
             to: String!
             content: String!

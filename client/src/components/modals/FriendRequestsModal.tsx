@@ -18,10 +18,9 @@ const FRIEND_REQUESTS = gql`
 `;
 
 const ADD_FRIEND = gql`
-  mutation addFriend($sender: String!, $recipient: String!) {
-    addFriend(sender: $sender, recipient: $recipient) {
+  mutation addFriend($sender: String!) {
+    addFriend(sender: $sender) {
       sender
-      recipient
     }
   }
 `;
@@ -49,7 +48,9 @@ export default function NotificationsModal({ isNewLogin }: Props) {
 
   const [addFriend] = useMutation(ADD_FRIEND, {
     onError: (error) =>
-      alert("An error has occured: " + error.graphQLErrors[0].extensions),
+      alert(
+        "An error has occured: " + error.graphQLErrors[0].extensions.message
+      ),
     variables: data,
   });
 
@@ -75,12 +76,10 @@ export default function NotificationsModal({ isNewLogin }: Props) {
     deleteFriendRequest();
   };
 
-  const handleAddFriend = (e) => {
+  const handleAddFriend = (e: FormEvent) => {
     e.preventDefault();
     addFriend();
-    e.currentTarget.classList.add("disabled");
-    e.currentTarget.classList.replace("btn-primary", "btn-success");
-    e.currentTarget.innerText = "Friend added!";
+    deleteFriendRequest();
   };
 
   return (
@@ -108,7 +107,7 @@ export default function NotificationsModal({ isNewLogin }: Props) {
                         variant="danger"
                         type="submit"
                         onClick={() => {
-                          setData({ ...data, sender: user.sender });
+                          setData({ sender: user.sender });
                         }}
                       >
                         Ignore
@@ -116,10 +115,10 @@ export default function NotificationsModal({ isNewLogin }: Props) {
                     </Form>
                     <Form onSubmit={handleAddFriend}>
                       <Button
+                        id={"btn" + user.sender}
                         variant="primary"
                         type="submit"
                         onClick={() => {
-                          // TODO:
                           setData({ sender: user.sender });
                         }}
                       >

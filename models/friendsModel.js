@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true
     },
-    email1: {
+    sender: {
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: false
     },
-    email2: {
+    recipient: {
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: false
