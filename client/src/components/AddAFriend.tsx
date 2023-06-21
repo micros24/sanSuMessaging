@@ -142,13 +142,13 @@ export default function AddAFriend() {
                         variant="primary"
                         type="submit"
                         onClick={(e) => {
+                          setFormData({ recipient: user.email });
                           e.currentTarget.classList.add("disabled");
                           e.currentTarget.classList.replace(
                             "btn-primary",
                             "btn-success"
                           );
                           e.currentTarget.innerText = "Request sent!";
-                          setFormData({ ...formData, recipient: user.email });
                         }}
                       >
                         Send request

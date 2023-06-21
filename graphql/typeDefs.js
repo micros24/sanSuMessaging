@@ -44,6 +44,10 @@ module.exports =
             lastName: String!
             profilePicture: String
         ): UserModel!
+        addFriend(
+            sender: String!
+            recipient: String!
+        ): FriendsModel!
         sendMessage(
             to: String!
             content: String!
@@ -55,5 +59,8 @@ module.exports =
             senderLastName: String
             senderProfilePicture: String
         ): FriendRequestModel!
+        deleteFriendRequest(
+            sender: String!
+        ): FriendRequestModel
     }
 `;

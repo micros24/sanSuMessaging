@@ -1,6 +1,8 @@
 const registerProvider = require('./mutations/register');
 const sendMessageProvider = require('./mutations/sendMessage');
-const sendFriendRequestProvider = require("./mutations/sendFriendRequest")
+const sendFriendRequestProvider = require("./mutations/sendFriendRequest");
+const deleteFriendRequestProvider = require("./mutations/deleteFriendRequest");
+const addFriendProvider = require("./mutations/addFriend");
 const loginProvider = require('./queries/login');
 const getUsersProvider = require('./queries/getUsers');
 const getUsersTempProvider = require('./queries/getUsersTemp');
@@ -38,11 +40,17 @@ module.exports = {
     register: (_, formData) => {
         return registerProvider(UserModel, formData);
     },
+    addFriend: (_, { sender }, { user }) => {
+        return addFriendProvider(sender, user);
+    },
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user);
     },
     sendFriendRequest: (_, { recipient }, { user }) => {
         return sendFriendRequestProvider(UserModel, recipient, user);
-    }
+    },
+    deleteFriendRequest: (_, { sender }, { user }) => {
+        return deleteFriendRequestProvider(sender, user);
+    },
   }
 }

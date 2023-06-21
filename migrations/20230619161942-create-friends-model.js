@@ -9,13 +9,13 @@ module.exports = {
         allowNull: false,
         primaryKey: true
       },
-      email1: {
+      sender: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: false,
         references: { model: 'users', key: 'email' }
       },
-      email2: {
+      recipient: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: false,

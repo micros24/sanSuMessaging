@@ -1,7 +1,8 @@
-import { gql, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
 
 const FRIEND_REQUESTS = gql`
@@ -16,6 +17,23 @@ const FRIEND_REQUESTS = gql`
   }
 `;
 
+const ADD_FRIEND = gql`
+  mutation addFriend($sender: String!, $recipient: String!) {
+    addFriend(sender: $sender, recipient: $recipient) {
+      sender
+      recipient
+    }
+  }
+`;
+
+const DELETE_FRIEND_REQUEST = gql`
+  mutation deleteFriendRequest($sender: String!) {
+    deleteFriendRequest(sender: $sender) {
+      sender
+    }
+  }
+`;
+
 interface Props {
   isNewLogin: boolean;
 }
@@ -25,12 +43,23 @@ export default function NotificationsModal({ isNewLogin }: Props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [formData, setFormData] = useState({
-    recipient: "",
+  const [data, setData] = useState({
+    sender: "",
+  });
+
+  const [addFriend] = useMutation(ADD_FRIEND, {
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions),
+    variables: data,
+  });
+
+  const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions),
+    variables: data,
   });
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {
-    pollInterval: 5000, // Poll every 5 seconds
     onCompleted(data) {
       users = data.getFriendRequests;
     },
@@ -39,6 +68,20 @@ export default function NotificationsModal({ isNewLogin }: Props) {
     // re-render
     refetch();
   }
+
+  const handleDeleteFriendRequest = (e: FormEvent) => {
+    e.preventDefault();
+    document.getElementById(e.currentTarget.id)?.setAttribute("hidden", "");
+    deleteFriendRequest();
+  };
+
+  const handleAddFriend = (e) => {
+    e.preventDefault();
+    addFriend();
+    e.currentTarget.classList.add("disabled");
+    e.currentTarget.classList.replace("btn-primary", "btn-success");
+    e.currentTarget.innerText = "Friend added!";
+  };
 
   return (
     <>
@@ -56,25 +99,33 @@ export default function NotificationsModal({ isNewLogin }: Props) {
           <ListGroup variant="flush">
             {users ? (
               users.map((user) => (
-                <ListGroup.Item key={user.sender}>
+                <ListGroup.Item id={user.sender} key={user.sender}>
                   <div className="d-flex justify-content-between align-items-center">
                     {user.senderProfilePicture} {user.senderFirstName}{" "}
                     {user.senderLastName} ({user.sender})
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      onClick={(e) => {
-                        e.currentTarget.classList.add("disabled");
-                        e.currentTarget.classList.replace(
-                          "btn-primary",
-                          "btn-success"
-                        );
-                        e.currentTarget.innerText = "Request sent!";
-                        setFormData({ ...formData, recipient: user.sender });
-                      }}
-                    >
-                      Accept request
-                    </Button>
+                    <Form onSubmit={handleDeleteFriendRequest}>
+                      <Button
+                        variant="danger"
+                        type="submit"
+                        onClick={() => {
+                          setData({ ...data, sender: user.sender });
+                        }}
+                      >
+                        Ignore
+                      </Button>
+                    </Form>
+                    <Form onSubmit={handleAddFriend}>
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={() => {
+                          // TODO:
+                          setData({ sender: user.sender });
+                        }}
+                      >
+                        Accept request
+                      </Button>
+                    </Form>
                   </div>
                 </ListGroup.Item>
               ))
