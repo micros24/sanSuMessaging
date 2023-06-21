@@ -3,8 +3,9 @@ import SideBarTop from "./SideBarTop";
 import ChatMessage from "./ChatMessage";
 import ChatWindow from "./ChatWindow";
 import ChatWindowTop from "./ChatWindowTop";
-import Notifications from "./Notifications";
+import FriendRequests from "./FriendRequests";
 import AccountModal from "./modals/AccountModal";
+import FriendRequestsModal from "./modals/FriendRequestsModal";
 import { useAuthState } from "../context/auth";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -24,11 +25,12 @@ export default function MessagingLayout() {
 
   return (
     <div className="vh-100">
-      <Notifications isNewLogin={true} />
+      <FriendRequestsModal />
+      <AccountModal />
+      <FriendRequests isNewLogin={true} />
       <Row>
         <Col className="col-2">
           <Row className="mt-3">
-            <AccountModal />
             <SideBarTop onAccountClick={handleAccountClick} />
           </Row>
           <Row
