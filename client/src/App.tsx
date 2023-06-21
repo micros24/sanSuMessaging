@@ -24,7 +24,8 @@ export default function App() {
           <Route path="/" index Component={Login} />
           <Route path="register" Component={Register} />
           <Route path="messaging" Component={MessagingLayout} />
-          <Route path="addFriend" Component={AddAFriend} />
+          <Route path="/addFriend" Component={AddAFriend} />
+          <Route path="/addFriend/:refreshUsers" Component={AddAFriend} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useAuthDispatch, useAuthState } from "../../context/auth";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, redirect } from "react-router-dom";
 
 interface Props {
   showAddAFriendButton?: boolean;
@@ -18,12 +18,7 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/"); // Redirect to Login
-  };
-
-  const handleAddFriend = (e) => {
-    e.preventDefault();
-    navigate("/addFriend");
+    redirect("/"); // Redirect to Login
   };
 
   const footerOverride = {
@@ -85,7 +80,8 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
           <div>
             <Button
               variant="success"
-              onClick={handleAddFriend}
+              type="button"
+              onClick={() => navigate("/addFriend/true")}
               hidden={showAddAFriendButton}
             >
               Add a friend

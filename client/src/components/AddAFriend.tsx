@@ -1,4 +1,4 @@
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { useAuthState } from "../context/auth";
 import { FormEvent, useState } from "react";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
@@ -31,10 +31,14 @@ const SEND_FRIEND_REQUEST = gql`
 
 let users;
 export default function AddAFriend() {
+  let { refreshUsers } = useParams();
   // workaround route guard
   const user = useAuthState().user;
   if (!user) {
     return <Navigate to="/" />;
+  } else if (refreshUsers === "true") {
+    users = undefined;
+    return <Navigate to="/addFriend" />;
   }
 
   const navigate = useNavigate();
