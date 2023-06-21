@@ -19,13 +19,17 @@ module.exports =
         email1: String!
         email2: String!
     }
+    type FriendRequestModel {
+        uuid: String!
+        sender: String!
+        recipient: String!
+    }
     type Query {
         getUsersTemp: [UserModel]! # TODO: TEMP ONLY
         getUsers(name: String!): [UserModel]!
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!
-        getRequests: [SendRequestModel]!
     }
     type Mutation {
         register(
@@ -40,5 +44,9 @@ module.exports =
             to: String!
             content: String!
         ): MessageModel!
+        sendFriendRequest(
+            sender: String!
+            recipient: String!
+        ): FriendRequestModel!
     }
 `;

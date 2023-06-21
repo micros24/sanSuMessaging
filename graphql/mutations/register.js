@@ -8,8 +8,8 @@ const validateEmail = (email) => {
       );
   };
 
-module.exports = async (UserModel ,args) => {
-    let {email, password, confirmPassword, firstName, lastName, profilePicture} = args;
+module.exports = async (UserModel ,formData) => {
+    let {email, password, confirmPassword, firstName, lastName, profilePicture} = formData;
     let errors = {};
 
     try{
