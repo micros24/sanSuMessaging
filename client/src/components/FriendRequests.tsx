@@ -15,13 +15,13 @@ interface Props {
   isNewLogin: boolean;
 }
 
-export default function FriendRequests({ isNewLogin }: Props) {
-  const [friendRequestsCount, setFriendRequestsCount] = useState(0);
+export default function Notifications({ isNewLogin }: Props) {
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {
     pollInterval: 5000, // Poll every 5 seconds
     onCompleted(data) {
-      setFriendRequestsCount(data.getFriendRequests.length);
+      setNotificationCount(data.getFriendRequests.length);
     },
   });
   if (isNewLogin === true) {
@@ -47,7 +47,7 @@ export default function FriendRequests({ isNewLogin }: Props) {
         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
       </svg>
       <Badge bg="danger">
-        {friendRequestsCount > 0 ? friendRequestsCount : ""}
+        {notificationCount > 0 ? notificationCount : ""}
       </Badge>
       <span className="visually-hidden">Friend requests</span>
     </Button>
