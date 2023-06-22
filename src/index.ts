@@ -4,7 +4,9 @@ import express from 'express';
 import pkg1 from './models/index.js';
 import resolversProvider from './graphql/resolvers.js'
 import typeDefsProvider from './graphql/typeDefs.js'
+import contextMiddleware from './utils/contextMiddleware.js';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { createServer } from 'http';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { makeExecutableSchema } from '@graphql-tools/schema';
@@ -32,11 +34,9 @@ const wsServer = new WebSocketServer({
 // WebSocketServer start listening.
 const serverCleanup = useServer({ schema }, wsServer);
 
-interface myContext {
-  
-}
+interface MyContext {contextMiddleware}
 
-const server = new ApolloServer({
+const server = new ApolloServer<MyContext>({
   schema,
   plugins: [
     // Proper shutdown for the HTTP server.
@@ -55,15 +55,9 @@ const server = new ApolloServer({
 });
 
 await server.start();
-
-app.use('/graphql', bodyParser.json(), expressMiddleware(server));
-
-
-
-// const { url } = await startStandaloneServer(server, {
-//   context: contextMiddleware
-// });
-//console.log(`🚀 Server ready at http://localhost:${url}`);
+app.use('/graphql',   cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server, {
+  context: contextMiddleware
+}));
 
 httpServer.listen(url, () => {
   console.log(`🚀 Query endpoint ready at http://localhost:${url}/graphql`);
