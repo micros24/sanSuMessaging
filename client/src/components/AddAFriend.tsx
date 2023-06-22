@@ -9,6 +9,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import AccountModal from "./modals/AccountModal";
 
+// TODO: Add a validation for sending another request to the same user
+
 const GET_USERS = gql`
   query getUsers($name: String!) {
     getUsers(name: $name) {

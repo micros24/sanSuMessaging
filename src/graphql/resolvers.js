@@ -49,30 +49,18 @@ module.exports = {
         return addFriendProvider(sender, user);
     },
     sendMessage: (_, { to, content } , { user }) => {
-        return sendMessageProvider(UserModel, { to, content }, user);
+        return sendMessageProvider(UserModel, { to, content }, user, pubSub);
     },
     sendFriendRequest: (_, { recipient }, { user }) => {
         return sendFriendRequestProvider(UserModel, recipient, user);
     },
     deleteFriendRequest: (_, { sender }, { user }) => {
         return deleteFriendRequestProvider(sender, user);
-    },
-
-
-
-
-
-    scheduleOperation(_, {name}) {
-        console.log(`Mocking operation: ${name}`);
-        return `Operation: ${name} scheduled!`;
     }
   },
-
-
   Subscription: {
-    newMessage: () => pubSub.asyncIterator(['NEW_MESSAGE'])
+    newMessage: {
+        subscribe: () => pubSub.asyncIterator(['NEW_MESSAGE'])
+    } 
   }
-
-
-
 }
