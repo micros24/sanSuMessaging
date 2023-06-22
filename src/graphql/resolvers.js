@@ -10,6 +10,8 @@ const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
 const { UserModel } = require('../models');
+const { PubSub } = require("graphql-subscriptions");
+const pubSub = new PubSub();
 
 module.exports = {
     MessageModel: {
@@ -34,6 +36,9 @@ module.exports = {
         },
         getFriendRequests: (_, __, { user }) => {
             return getFriendRequestsProvider(user);
+        },
+        foo() {
+            return 'foo';
         }
   },
   Mutation: {
@@ -52,5 +57,22 @@ module.exports = {
     deleteFriendRequest: (_, { sender }, { user }) => {
         return deleteFriendRequestProvider(sender, user);
     },
+
+
+
+
+
+    scheduleOperation(_, {name}) {
+        console.log(`Mocking operation: ${name}`);
+        return `Operation: ${name} scheduled!`;
+    }
+  },
+
+
+  Subscription: {
+    newMessage: () => pubSub.asyncIterator(['NEW_MESSAGE'])
   }
+
+
+
 }

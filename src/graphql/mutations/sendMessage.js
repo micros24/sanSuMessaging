@@ -1,5 +1,7 @@
 const { GraphQLError } = require('graphql');
 const { MessageModel } = require('../../models');
+const { PubSub } = require("graphql-subscriptions");
+const pubSub = new PubSub();
 
 module.exports = async (UserModel, { to, content }, user) => {
     try {
@@ -16,6 +18,8 @@ module.exports = async (UserModel, { to, content }, user) => {
             to,
             content
         });
+
+        pubSub.publish('NEW_MESSAGE', { newMessage: message });
 
         return message;
     } catch (error) {

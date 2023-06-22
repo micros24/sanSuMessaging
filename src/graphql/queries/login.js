@@ -1,4 +1,4 @@
-const { JWT_SECRET } = require('../../config/env.json');
+const { JWT_SECRET } = require('../../../config/env.json');
 const { GraphQLError } = require ('graphql');
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");

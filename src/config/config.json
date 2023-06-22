@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "jasper",
+    "password": "myPassword",
+    "database": "sanSuDB",
+    "host": "127.0.0.1",
+    "dialect": "mariadb"
+  }
+}

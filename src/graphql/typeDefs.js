@@ -34,6 +34,7 @@ module.exports =
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!
         getFriendRequests: [FriendRequestModel]!
+        foo: String!
     }
     type Mutation {
         register(
@@ -61,5 +62,15 @@ module.exports =
         deleteFriendRequest(
             sender: String!
         ): FriendRequestModel
+        scheduleOperation(
+            name: String!
+        ): String!
+    }
+
+
+
+
+    type Subscription {
+        newMessage: MessageModel!
     }
 `;
