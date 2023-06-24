@@ -66,10 +66,6 @@ module.exports =
             name: String!
         ): String!
     }
-
-
-
-
     type Subscription {
         newMessage: MessageModel!
     }

@@ -68,6 +68,10 @@ module.exports = async (UserModel, name, user) => {
             // User is not registered
             if(!users[0]) throw "A person with that name/email is not registered.";
 
+            // Check is user has already sent a friend request
+            
+
+
             return users;
         } catch (err) {
             if(typeof(err) === "string") {
