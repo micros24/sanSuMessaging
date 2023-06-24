@@ -23,7 +23,7 @@ Install MariaDB depending on your operating system
 
 Initialize MariaDB
 
-> mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+> sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 Start MariaDB service
 
@@ -41,13 +41,13 @@ Create a user at 'localhost'
 
 > MariaDB [(none)]> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
 
-Grant all privileges to all databases to _USER_
+Grant all privileges to sanSuDB database to _USER_
 
-> MariaDB [(none)]> GRANT ALL PRIVILEGES ON mydb.\* TO '_USER_'@'localhost';
+> MariaDB [(none)]> GRANT ALL PRIVILEGES ON sanSuDB.\* TO '_USER_'@'localhost';
 
 Initialize database
 
-> sequelize db:migrate
+> npx sequelize-cli db:migrate
 
 Start node server
 
