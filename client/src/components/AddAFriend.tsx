@@ -14,10 +14,7 @@ import AccountModal from "./modals/AccountModal";
 const GET_USERS = gql`
   query getUsers($name: String!) {
     getUsers(name: $name) {
-      email
-      firstName
-      lastName
-      profilePicture
+      email firstName lastName profilePicture match
     }
   }
 `;
@@ -140,21 +137,33 @@ export default function AddAFriend() {
                     <div className="d-flex justify-content-between align-items-center">
                       {user.profilePicture} {user.firstName} {user.lastName} (
                       {user.email})
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        onClick={(e) => {
-                          setFormData({ recipient: user.email });
-                          e.currentTarget.classList.add("disabled");
-                          e.currentTarget.classList.replace(
-                            "btn-primary",
-                            "btn-success"
-                          );
-                          e.currentTarget.innerText = "Request sent!";
-                        }}
-                      >
-                        Send request
-                      </Button>
+
+                      {user.match === true ? (
+                        <Button
+                        variant="success"
+                        type="button"
+                        className="disabled"
+                        >
+                          Request sent!
+                        </Button>
+                      ) : (
+                            <Button
+                            variant="primary"
+                            type="submit"
+                            onClick={(e) => {
+                              setFormData({ recipient: user.email });
+                              e.currentTarget.classList.add("disabled");
+                              e.currentTarget.classList.replace(
+                                "btn-primary",
+                                "btn-success"
+                              );
+                              e.currentTarget.innerText = "Request sent!";
+                            }}
+                            >
+                              Send request
+                            </Button>
+                      )}
+
                     </div>
                   </ListGroup.Item>
                 ))

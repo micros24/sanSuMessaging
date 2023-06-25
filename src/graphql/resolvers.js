@@ -5,7 +5,6 @@ const deleteFriendRequestProvider = require("./mutations/deleteFriendRequest");
 const addFriendProvider = require("./mutations/addFriend");
 const loginProvider = require('./queries/login');
 const getUsersProvider = require('./queries/getUsers');
-const getUsersTempProvider = require('./queries/getUsersTemp');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
@@ -18,10 +17,6 @@ module.exports = {
         createdAt: (parent) => parent.createdAt.toISOString(),
     },
     Query: {
-        // TODO: TEMP ONLY
-        getUsersTemp: (_, __, { user }) => {
-            return getUsersTempProvider(UserModel, user);
-        },
         getUsers: (_, { name }, { user }) => {
             return getUsersProvider(UserModel, name, user);
         },
@@ -36,9 +31,6 @@ module.exports = {
         },
         getFriendRequests: (_, __, { user }) => {
             return getFriendRequestsProvider(user);
-        },
-        foo() {
-            return 'foo';
         }
   },
   Mutation: {

@@ -1,5 +1,6 @@
 const { GraphQLError } = require ('graphql');
 const { Op } = require("sequelize");
+const getSentFriendRequests = require('./getSentFriendRequests');
 const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -68,11 +69,41 @@ module.exports = async (UserModel, name, user) => {
             // User is not registered
             if(!users[0]) throw "A person with that name/email is not registered.";
 
-            // Check is user has already sent a friend request
-            
+            // Get all friend requests I have sent
+            const sentFriendRequests = await getSentFriendRequests(user);
+            let friendRequestSentChecker = [];
+            let match;
 
+            const pushIntoFriendRequestSentChecker = (person, match) => (
+                friendRequestSentChecker.push({
+                    email: person.email,
+                    firstName: person.firstName,
+                    lastName: person.lastName,
+                    profilePicture: person.profilePicture,
+                    match: match
+                })
+            );
+                
+            // users = the list of person with the name i am searching
+            // sentFriendRequests = all friend requests that I have sent
+            users.forEach(person => {
+                if(sentFriendRequests[0]) {
+                    sentFriendRequests.forEach(friendRequest => {
+                        if(person.email === friendRequest.recipient) {
+                            match = true;
+                            pushIntoFriendRequestSentChecker(person, match);
+                        } else {
+                            match = false;
+                            pushIntoFriendRequestSentChecker(person, match);
+                        }
+                    });
+                } else {
+                    match = false;
+                    pushIntoFriendRequestSentChecker(person, match);
+                }
+            });
 
-            return users;
+            return friendRequestSentChecker;
         } catch (err) {
             if(typeof(err) === "string") {
                 throw new GraphQLError('InputValidationViolation', {

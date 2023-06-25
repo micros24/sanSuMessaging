@@ -15,71 +15,41 @@ import { Col } from "react-bootstrap";
 //   }
 // `;
 
-// TODO: Remove temporary data when AddAFriend component is complete
-const GET_USERS = gql`
-  query getUsersTemp {
-    getUsersTemp {
-      email
-      firstName
-      lastName
-      profilePicture
-    }
-  }
-`;
-
 export default function ChatWindow() {
   const dispatch = useAuthDispatch();
   const [errors, setErrors] = useState(Object);
 
-  const { loading, data, error } = useQuery(GET_USERS);
-  //TODO: add logic to find who are your friends
+  // const { loading, data, error } = useQuery(GET_USERS);
+  // //TODO: add logic to find who are your friends
 
-  if (error) {
-    console.log(error);
-  }
+  // if (error) {
+  //   console.log(error);
+  // }
 
-  if (data) {
-    //console.log(data);
-  }
-  let friendsMarkup;
-  if (!data || loading) {
-    friendsMarkup = <p>Loading...</p>;
-  } else if (data.getUsersTemp.length === 0) {
-    friendsMarkup = <p>Add some friends to start chatting :)</p>;
-  } else if (data.getUsersTemp.length > 0) {
-    friendsMarkup = data.getUsersTemp.map((user) => (
-      <div key={user.email}>
-        <p>{user.email}</p>
-      </div>
-    ));
-  }
-
+  // if (data) {
+  //   //console.log(data);
+  // }
   // let friendsMarkup;
   // if (!data || loading) {
   //   friendsMarkup = <p>Loading...</p>;
-  // } else if (data.getFriends.length === 0) {
+  // } else if (data.getUsersTemp.length === 0) {
   //   friendsMarkup = <p>Add some friends to start chatting :)</p>;
-  // } else if (data.getFriends.length > 0) {
-  //   friendsMarkup = data.getFriends.map((user) => (
+  // } else if (data.getUsersTemp.length > 0) {
+  //   friendsMarkup = data.getUsersTemp.map((user) => (
   //     <div key={user.email}>
   //       <p>{user.email}</p>
   //     </div>
   //   ));
   // }
 
-  // const [getFriends, { loading }] = useQuery(GET_FRIENDS, {
-  //   onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
-  //   onCompleted(data) {},
-  // });
-
   return (
     <div>
-      <Row>
+      {/* <Row>
         <Col xs={4}>{friendsMarkup}</Col>
         <Col xs={8}>
           <p>Messages</p>
         </Col>
-      </Row>
+      </Row> */}
 
       <p>123</p>
       <p>123</p>

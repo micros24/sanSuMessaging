@@ -27,9 +27,15 @@ module.exports =
         senderLastName: String!
         senderProfilePicture: String
     }
+    type FriendRequestSentChecker {
+        email: String!
+        firstName: String!
+        lastName: String!
+        profilePicture: String
+        match: Boolean!
+    }
     type Query {
-        getUsersTemp: [UserModel]! # TODO: TEMP ONLY
-        getUsers(name: String!): [UserModel]!
+        getUsers(name: String!): [FriendRequestSentChecker]!
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!
