@@ -3,7 +3,6 @@ const { FriendRequestModel } = require('../../models');
 
 module.exports = async (sender, user) => {
     try {
-        // TODO: Add validation not to send into same user
         // Validation
         if(!user) throw new GraphQLError('Unauthenticated');
 
