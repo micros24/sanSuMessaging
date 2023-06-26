@@ -8,6 +8,8 @@ const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
+const newFriendRequestProvider = require("./subscriptions/newFriendRequest");
+const { withFilter } = require("graphql-subscriptions");
 const { UserModel } = require('../models');
 const { PubSub } = require("graphql-subscriptions");
 const pubSub = new PubSub();
@@ -43,8 +45,8 @@ module.exports = {
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user, pubSub);
     },
-    sendFriendRequest: (_, { recipient }, { user }) => {
-        return sendFriendRequestProvider(UserModel, recipient, user);
+    sendFriendRequest: (_, { recipient }, { user, contextPubSub }) => {
+        return sendFriendRequestProvider(UserModel, recipient, user, contextPubSub, pubSub);
     },
     deleteFriendRequest: (_, { sender }, { user }) => {
         return deleteFriendRequestProvider(sender, user);
@@ -52,7 +54,12 @@ module.exports = {
   },
   Subscription: {
     newMessage: {
-        subscribe: () => pubSub.asyncIterator(['NEW_MESSAGE'])
-    } 
+        subscribe: () => pubSub.asyncIterator('NEW_MESSAGE')
+    },
+    newFriendRequest: {
+        subscribe: (_, __, { user }) => {
+            return newFriendRequestProvider(user, pubSub);
+        }
+    }
   }
 }

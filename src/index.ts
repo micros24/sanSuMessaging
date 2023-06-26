@@ -23,16 +23,18 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 // Creating the WebSocket server
 const wsServer = new WebSocketServer({
-  // This is the `httpServer` we created in a previous step.
   server: httpServer,
-  // Pass a different path here if app.use
-  // serves expressMiddleware at a different path
   path: '/graphql',
 });
 
 // Hand in the schema we just created and have the
 // WebSocketServer start listening.
-const serverCleanup = useServer({ schema }, wsServer);
+const serverCleanup = useServer({ 
+    schema,
+    context: contextMiddleware
+  }, 
+  wsServer
+);
 
 interface MyContext {contextMiddleware}
 

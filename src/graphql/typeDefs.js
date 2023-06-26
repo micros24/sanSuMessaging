@@ -40,7 +40,6 @@ module.exports =
         getMessages(from: String!): [MessageModel]!
         getFriends: [FriendsModel]!
         getFriendRequests: [FriendRequestModel]!
-        foo: String!
     }
     type Mutation {
         register(
@@ -74,5 +73,6 @@ module.exports =
     }
     type Subscription {
         newMessage: MessageModel!
+        newFriendRequest: FriendRequestModel!
     }
 `;
