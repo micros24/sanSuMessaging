@@ -73,6 +73,8 @@ module.exports =
     }
     type Subscription {
         newMessage: MessageModel!
-        newFriendRequest: FriendRequestModel!
+        newFriendRequest(
+            recipient: String!
+        ): FriendRequestModel!
     }
 `;

@@ -1,7 +1,7 @@
 const { GraphQLError } = require('graphql');
 const { FriendRequestModel } = require('../../models');
 
-module.exports = async (UserModel, recipient, user) => {
+module.exports = async (UserModel, recipient, user,  pubSub) => {
     try {
         // Validation
         if(!user) throw new GraphQLError('Unauthenticated');
@@ -16,6 +16,8 @@ module.exports = async (UserModel, recipient, user) => {
             senderLastName: user.lastName,
             senderProfilePicture: user.profilePicture
         });
+
+        pubSub.publish('NEW_FRIEND_REQUEST', { newFriendRequest: friendRequest } );
 
         return friendRequest;
     } catch (error) {

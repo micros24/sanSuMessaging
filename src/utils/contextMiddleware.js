@@ -1,4 +1,5 @@
 const { JWT_SECRET } = require('../config/env.json');
+const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
 module.exports = async context => {
@@ -13,7 +14,7 @@ module.exports = async context => {
     // Verify token
     if(token) {
       jwt.verify(token, JWT_SECRET, function(err, decoded) {
-        if(err) throw new GraphQLError('Unauthenticated');
+        if(err) throw new GraphQLError('Token expired');
         context.user = decoded;
       });
     }

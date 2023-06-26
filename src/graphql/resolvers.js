@@ -8,9 +8,10 @@ const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
-const newFriendRequestProvider = require("./subscriptions/newFriendRequest");
-const { withFilter } = require("graphql-subscriptions");
+//const newFriendRequestProvider = require("./subscriptions/newFriendRequest");
+
 const { UserModel } = require('../models');
+const { withFilter } = require("graphql-subscriptions")
 const { PubSub } = require("graphql-subscriptions");
 const pubSub = new PubSub();
 
@@ -45,8 +46,8 @@ module.exports = {
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user, pubSub);
     },
-    sendFriendRequest: (_, { recipient }, { user, contextPubSub }) => {
-        return sendFriendRequestProvider(UserModel, recipient, user, contextPubSub, pubSub);
+    sendFriendRequest: (_, { recipient }, { user }) => {
+        return sendFriendRequestProvider(UserModel, recipient, user, pubSub);
     },
     deleteFriendRequest: (_, { sender }, { user }) => {
         return deleteFriendRequestProvider(sender, user);
@@ -57,9 +58,21 @@ module.exports = {
         subscribe: () => pubSub.asyncIterator('NEW_MESSAGE')
     },
     newFriendRequest: {
-        subscribe: (_, __, { user }) => {
-            return newFriendRequestProvider(user, pubSub);
-        }
+        subscribe: withFilter(
+            //first parameter
+            (_, __, { user }) => {
+                if (!user) throw new GraphQlError('Unauthenticated');
+                return pubSub.asyncIterator(['NEW_FRIEND_REQUEST']);
+            },
+            //second parameter
+            ({ newFriendRequest }, { recipient }) => {
+                if (newFriendRequest.recipient === recipient) {
+                    return true;
+                }
+            
+            return false;
+            }
+        )
     }
   }
 }
