@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
 import { ToastContainer, toast } from "react-toastify";
+import { FriendRequestModel } from "../../../../src/models";
 import "react-toastify/dist/ReactToastify.css";
 
 const FRIEND_REQUESTS = gql`
@@ -39,10 +40,11 @@ interface Props {
   isNewLogin: boolean;
 }
 
-let users;
 export default function NotificationsModal({ isNewLogin }: Props) {
+
   const [show, setShow] = useState(false);
   const [toastText, setToastText] = useState("");
+  const [users, setUsers] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const showToastonClick = document.getElementById("btnShowToast");
@@ -67,7 +69,7 @@ export default function NotificationsModal({ isNewLogin }: Props) {
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {
     onCompleted(data) {
-      users = data.getFriendRequests;
+      setUsers(data.getFriendRequests)
     },
   });
   if (isNewLogin === true) {
@@ -77,7 +79,10 @@ export default function NotificationsModal({ isNewLogin }: Props) {
 
   const handleDeleteFriendRequest = (e: FormEvent) => {
     e.preventDefault();
-    document.getElementById(e.currentTarget.id)?.setAttribute("hidden", "");
+    let temp = users;
+    let index = temp.findIndex(() => e.currentTarget.id);
+    delete temp[index];
+    setUsers(temp);
     deleteFriendRequest();
     showToastonClick?.click();
     notify();
@@ -111,18 +116,18 @@ export default function NotificationsModal({ isNewLogin }: Props) {
         </Modal.Header>
         <Modal.Body className="text-center">
           <ListGroup variant="flush">
-            {users ? (
-              users.map((user) => (
-                <ListGroup.Item id={user.sender} key={user.sender}>
+            {users[0] ? 
+              (users.map((friendRequest: FriendRequestModel) => (
+                <ListGroup.Item id={friendRequest.sender} key={friendRequest.sender}>
                   <div className="d-flex justify-content-between align-items-center">
-                    {user.senderProfilePicture} {user.senderFirstName}{" "}
-                    {user.senderLastName} ({user.sender})
+                    {friendRequest.senderProfilePicture} {friendRequest.senderFirstName}{" "}
+                    {friendRequest.senderLastName} ({friendRequest.sender})
                     <Form onSubmit={handleDeleteFriendRequest}>
                       <Button
                         variant="danger"
                         type="submit"
                         onClick={() => {
-                          setData({ sender: user.sender });
+                          setData({ sender: friendRequest.sender });
                           setToastText("Friend request ignored");
                         }}
                       >
@@ -131,11 +136,11 @@ export default function NotificationsModal({ isNewLogin }: Props) {
                     </Form>
                     <Form onSubmit={handleAddFriend}>
                       <Button
-                        id={"btn" + user.sender}
+                        id={"btn" + friendRequest.sender}
                         variant="primary"
                         type="submit"
                         onClick={() => {
-                          setData({ sender: user.sender });
+                          setData({ sender: friendRequest.sender });
                           setToastText("Friend added!");
                         }}
                       >

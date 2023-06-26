@@ -10,6 +10,24 @@ import { useAuthState } from "../context/auth";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Navigate } from "react-router-dom";
+import { gql, useQuery } from "@apollo/client";
+import { useState } from "react";
+
+const FRIEND_REQUESTS_QUERY = gql`
+  query getFriendRequests {
+    getFriendRequests {
+      sender recipient
+    }
+  }
+`;
+
+const FRIEND_REQUESTS_SUBSCRIPTION = gql`
+  subscription newFriendRequest($recipient: String!) {
+    newFriendRequest(recipient: $recipient) {
+      sender recipient
+    }
+  }
+`;
 
 export default function MessagingLayout() {
   // workaround route guard
@@ -17,6 +35,14 @@ export default function MessagingLayout() {
   if (!user) {
     return <Navigate to="/" />;
   }
+  const [_, setNotificationCount] = useState(0);
+
+  // query on load
+  const { subscribeToMore } = useQuery(FRIEND_REQUESTS_QUERY, {
+    onCompleted(data) {
+      setNotificationCount(data.getFriendRequests.length);
+    },
+  });
 
   const handleAccountClick = () => {
     const accountModal = document.getElementById("btnShowAccountModal");
@@ -37,6 +63,22 @@ export default function MessagingLayout() {
       <FriendRequests
         isNewLogin={true}
         onFriendRequestsClick={handleFriendRequestsClick}
+        subscribeToFriendRequests={() =>
+          subscribeToMore({
+            document: FRIEND_REQUESTS_SUBSCRIPTION,
+            variables: { recipient: user.email },
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) return prev;
+              const newCount = subscriptionData.data.newFriendRequest;
+              return Object.assign({}, prev, {
+                getFriendRequests: {
+                  recipient: [newCount, ...prev.getFriendRequests],
+                  sender: [newCount, ...prev.getFriendRequests]
+                }
+              });
+            }
+          })
+        }
       />
       <Row>
         <Col className="col-2">

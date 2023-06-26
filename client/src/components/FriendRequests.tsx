@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 
-const FRIEND_REQUESTS = gql`
+const FRIEND_REQUESTS_QUERY = gql`
   query getFriendRequests {
     getFriendRequests {
       sender
@@ -14,24 +14,29 @@ const FRIEND_REQUESTS = gql`
 interface Props {
   isNewLogin: boolean;
   onFriendRequestsClick: () => void; // show modal
+  subscribeToFriendRequests
 }
 
 export default function Notifications({
   isNewLogin,
   onFriendRequestsClick,
+  subscribeToFriendRequests
 }: Props) {
   const [notificationCount, setNotificationCount] = useState(0);
 
-  const { refetch } = useQuery(FRIEND_REQUESTS, {
-    pollInterval: 5000, // Poll every 5 seconds
+  // query on load
+  const { refetch } = useQuery(FRIEND_REQUESTS_QUERY, {
     onCompleted(data) {
       setNotificationCount(data.getFriendRequests.length);
     },
   });
+
+  // re-render
   if (isNewLogin === true) {
-    // re-render
     refetch();
   }
+
+  useEffect(() => subscribeToFriendRequests(), []);
 
   return (
     <Button

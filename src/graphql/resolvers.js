@@ -8,7 +8,6 @@ const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
-//const newFriendRequestProvider = require("./subscriptions/newFriendRequest");
 
 const { UserModel } = require('../models');
 const { withFilter } = require("graphql-subscriptions")
