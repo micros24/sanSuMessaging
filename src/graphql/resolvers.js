@@ -40,7 +40,7 @@ module.exports = {
         return registerProvider(UserModel, formData);
     },
     addFriend: (_, { sender }, { user }) => {
-        return addFriendProvider(sender, user);
+        return addFriendProvider(sender, user, pubSub);
     },
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user, pubSub);
@@ -66,6 +66,23 @@ module.exports = {
             //second parameter
             ({ newFriendRequest }, { recipient }) => {
                 if (newFriendRequest.recipient === recipient) {
+                    return true;
+                }
+            
+            return false;
+            }
+        )
+    },
+    newFriend: {
+        subscribe: withFilter(
+            //first parameter
+            (_, __, { user }) => {
+                if (!user) throw new GraphQlError('Unauthenticated');
+                return pubSub.asyncIterator('NEW_FRIEND');
+            },
+            //second parameter
+            ({ newFriend }, { recipient }) => {
+                if (newFriend.recipient === recipient) {
                     return true;
                 }
             

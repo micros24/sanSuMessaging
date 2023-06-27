@@ -40,8 +40,7 @@ interface Props {
   isNewLogin: boolean;
 }
 
-export default function NotificationsModal({ isNewLogin }: Props) {
-
+export default function FriendRequestsModal({ isNewLogin }: Props) {
   const [show, setShow] = useState(false);
   const [toastText, setToastText] = useState("");
   const [users, setUsers] = useState([]);
@@ -54,17 +53,13 @@ export default function NotificationsModal({ isNewLogin }: Props) {
   });
 
   const [addFriend] = useMutation(ADD_FRIEND, {
-    onError: (error) =>
-      alert(
-        "An error has occured: " + error.graphQLErrors[0].extensions.message
-      ),
-    variables: data,
+    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    variables: data
   });
 
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
-    onError: (error) =>
-      alert("An error has occured: " + error.graphQLErrors[0].extensions),
-    variables: data,
+    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    variables: data
   });
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {

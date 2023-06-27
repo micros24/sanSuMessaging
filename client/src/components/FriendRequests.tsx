@@ -41,7 +41,7 @@ export default function Notifications({
   return (
     <Button
       variant="link"
-      className="text-white d-flex justify-content-center align-items-center bg-transparent link-underline link-underline-opacity-0 "
+      className="text-white d-flex justify-content-center align-items-center bg-transparent link-underline link-underline-opacity-0"
       onClick={onFriendRequestsClick}
       style={{ position: "absolute", right: "0", margin: "0.5%" }}
     >

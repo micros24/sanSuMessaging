@@ -38,7 +38,7 @@ module.exports =
         getUsers(name: String!): [FriendRequestSentChecker]!
         login(email: String!, password: String!): UserModel!
         getMessages(from: String!): [MessageModel]!
-        getFriends: [FriendsModel]!
+        getFriends: [UserModel]!
         getFriendRequests: [FriendRequestModel]!
     }
     type Mutation {
@@ -76,5 +76,8 @@ module.exports =
         newFriendRequest(
             recipient: String!
         ): FriendRequestModel!
+        newFriend(
+            recipient: String!
+        ): FriendsModel!
     }
 `;
