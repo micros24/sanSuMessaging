@@ -8,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import AccountModal from "./modals/AccountModal";
-import { UserModel } from "../../../src/models";
 
 const GET_USERS = gql`
   query getUsers($name: String!) {
@@ -26,15 +25,15 @@ const SEND_FRIEND_REQUEST = gql`
   }
 `;
 
+let users;
 export default function AddAFriend() {
   let { refreshUsers } = useParams();
-  const [users, setUsers] = useState([]);
   // workaround route guard
   const user = useAuthState().user;
   if (!user) {
     return <Navigate to="/" />;
   } else if (refreshUsers === "true") {
-    setUsers([]);
+    users = undefined;
     return <Navigate to="/addFriend" />;
   }
 
@@ -51,7 +50,7 @@ export default function AddAFriend() {
   const [getUsers, { loading }] = useLazyQuery(GET_USERS, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions),
     onCompleted(data) {
-      setUsers(data.getUsers);
+      users = data.getUsers;
     },
   });
 
@@ -131,13 +130,13 @@ export default function AddAFriend() {
           <Row className="p-3 bg-white text-dark bg-trans">
             <ListGroup>
               {users ? (
-                users.map((person: UserModel ) => (
-                  <ListGroup.Item key={person.email}>
+                users.map((user) => (
+                  <ListGroup.Item key={user.email}>
                     <div className="d-flex justify-content-between align-items-center">
-                      {person.profilePicture} {person.firstName} {person.lastName} (
-                      {person.email})
+                      {user.profilePicture} {user.firstName} {user.lastName} (
+                      {user.email})
 
-                      {person.match === true ? (
+                      {user.match === true ? (
                         <Button
                         variant="success"
                         type="button"
@@ -150,7 +149,7 @@ export default function AddAFriend() {
                             variant="primary"
                             type="submit"
                             onClick={(e) => {
-                              setFormData({ recipient: person.email });
+                              setFormData({ recipient: user.email });
                               e.currentTarget.classList.add("disabled");
                               e.currentTarget.classList.replace(
                                 "btn-primary",
