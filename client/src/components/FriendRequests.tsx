@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useState } from "react";
+import { gql, useQuery, useSubscription } from "@apollo/client";
+import { useAuthState } from "../context/auth";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 
@@ -11,32 +12,49 @@ const FRIEND_REQUESTS_QUERY = gql`
   }
 `;
 
+const FRIEND_REQUESTS_SUBSCRIPTION = gql`
+  subscription newFriendRequest($recipient: String!) {
+    newFriendRequest(recipient: $recipient) {
+      sender recipient
+    }
+  }
+`;
+
 interface Props {
   isNewLogin: boolean;
   onFriendRequestsClick: () => void; // show modal
-  subscribeToFriendRequests
 }
 
-export default function Notifications({
+export default function FriendRequests({
   isNewLogin,
-  onFriendRequestsClick,
-  subscribeToFriendRequests
+  onFriendRequestsClick
 }: Props) {
+  const user = useAuthState().user;
   const [notificationCount, setNotificationCount] = useState(0);
 
-  // query on load
   const { refetch } = useQuery(FRIEND_REQUESTS_QUERY, {
+    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
       setNotificationCount(data.getFriendRequests.length);
+    }
+  });
+
+  const {} = useSubscription(FRIEND_REQUESTS_SUBSCRIPTION, {
+    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onData() {
+      let plusOne = notificationCount + 1;
+      setNotificationCount(plusOne);
     },
+    variables: {
+      recipient: user.email
+    }
   });
 
   // re-render
   if (isNewLogin === true) {
+    isNewLogin = false;
     refetch();
   }
-
-  useEffect(() => subscribeToFriendRequests(), []);
 
   return (
     <Button

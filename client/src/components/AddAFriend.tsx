@@ -9,6 +9,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import AccountModal from "./modals/AccountModal";
 
+//TODO: Add validation to check if searched person is already a friend.
+
 const GET_USERS = gql`
   query getUsers($name: String!) {
     getUsers(name: $name) {
