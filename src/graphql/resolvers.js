@@ -40,7 +40,7 @@ module.exports = {
         return registerProvider(UserModel, formData);
     },
     addFriend: (_, { sender }, { user }) => {
-        return addFriendProvider(sender, user, pubSub);
+        return addFriendProvider(UserModel, sender, user, pubSub);
     },
     sendMessage: (_, { to, content } , { user }) => {
         return sendMessageProvider(UserModel, { to, content }, user, pubSub);
@@ -68,7 +68,6 @@ module.exports = {
                 if (newFriendRequest.recipient === recipient) {
                     return true;
                 }
-            
             return false;
             }
         )
@@ -81,12 +80,11 @@ module.exports = {
                 return pubSub.asyncIterator('NEW_FRIEND');
             },
             //second parameter
-            ({ newFriend }, { recipient }) => {
-                if (newFriend.recipient === recipient) {
+            ({ newFriend, loggedInUser }, { recipient }) => {
+                if (loggedInUser === recipient) {
                     return true;
                 }
-            
-            return false;
+                return false;
             }
         )
     }

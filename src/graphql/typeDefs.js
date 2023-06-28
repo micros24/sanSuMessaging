@@ -78,6 +78,6 @@ module.exports =
         ): FriendRequestModel!
         newFriend(
             recipient: String!
-        ): FriendsModel!
+        ): UserModel!
     }
 `;

@@ -1,10 +1,20 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
+import { useAuthState } from "../context/auth";
 import { useState } from "react";
 import { UserModel } from "../../../src/models";
+// TODO: add re-rendering
 
-const GET_FRIENDS = gql`
+const GET_FRIENDS_QUERY = gql`
   query getFriends {
     getFriends {
+      email firstName lastName profilePicture
+    }
+  }
+`;
+
+const GET_FRIENDS_SUBSCRIPTION = gql`
+  subscription newFriend($recipient: String!) {
+    newFriend(recipient: $recipient) {
       email firstName lastName profilePicture
     }
   }
@@ -15,14 +25,28 @@ interface Props {
 };
 
 export default function SideBar({onFriendClick}: Props) {
-  const [friends, setFriends] = useState([]);
+  const user = useAuthState().user;
+  const [friends, setFriends] = useState<UserModel[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const { refetch } = useQuery(GET_FRIENDS, {
+
+  const {} = useQuery(GET_FRIENDS_QUERY, {
     onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
       setFriends(data.getFriends);
     }
   });
+
+  const {} = useSubscription(GET_FRIENDS_SUBSCRIPTION, {
+    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onData(data) {
+      let newFriend = data.data.data.newFriend;
+      let temp = [...friends, newFriend]
+      setFriends(temp);
+    },
+    variables: {
+      recipient: user.email
+    }
+  })
 
   return (
     <div className="list-group list-group-flush text-center">
@@ -36,6 +60,7 @@ export default function SideBar({onFriendClick}: Props) {
                 setSelectedIndex(index);
                 onFriendClick;
               }}
+              key={person.email}
               href="#">
             {person.profilePicture} {person.firstName} {person.lastName}
           </a>
