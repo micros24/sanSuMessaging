@@ -81,7 +81,7 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
             <Button
               variant="success"
               type="button"
-              onClick={() => navigate("/addFriend/true")}
+              onClick={() => navigate("/addFriend")}
               hidden={showAddAFriendButton}
             >
               Add a friend

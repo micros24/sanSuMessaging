@@ -1,4 +1,4 @@
-import { useNavigate, Navigate, useParams } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuthState } from "../context/auth";
 import { FormEvent, useState } from "react";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
@@ -8,10 +8,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import AccountModal from "./modals/AccountModal";
+import { FriendRequestSentCheckerModel } from "../../../src/models"
 
-//TODO: Add validation to check if searched person is already a friend.
-
-const GET_USERS = gql`
+const GET_USERS_QUERY = gql`
   query getUsers($name: String!) {
     getUsers(name: $name) {
       email firstName lastName profilePicture match
@@ -27,16 +26,12 @@ const SEND_FRIEND_REQUEST = gql`
   }
 `;
 
-let users;
 export default function AddAFriend() {
-  let { refreshUsers } = useParams();
+  const [users, setUsers] = useState<FriendRequestSentCheckerModel[]>([]);
   // workaround route guard
   const user = useAuthState().user;
   if (!user) {
     return <Navigate to="/" />;
-  } else if (refreshUsers === "true") {
-    users = undefined;
-    return <Navigate to="/addFriend" />;
   }
 
   const navigate = useNavigate();
@@ -49,15 +44,15 @@ export default function AddAFriend() {
     recipient: "",
   });
 
-  const [getUsers, { loading }] = useLazyQuery(GET_USERS, {
-    onError: (error) => setErrors(error.graphQLErrors[0].extensions),
+  const [getUsers, { loading }] = useLazyQuery(GET_USERS_QUERY, {
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
-      users = data.getUsers;
-    },
+      setUsers(data.getUsers);
+    }
   });
 
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
-    onError: (error) => setErrors(error.graphQLErrors[0].extensions),
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.code),
     variables: formData,
   });
 
@@ -131,14 +126,14 @@ export default function AddAFriend() {
         <Form onSubmit={handleSendFriendRequest}>
           <Row className="p-3 bg-white text-dark bg-trans">
             <ListGroup>
-              {users ? (
-                users.map((user) => (
-                  <ListGroup.Item key={user.email}>
+              {users[0] ? (
+                users.map((person: FriendRequestSentCheckerModel) => (
+                  <ListGroup.Item key={person.email}>
                     <div className="d-flex justify-content-between align-items-center">
-                      {user.profilePicture} {user.firstName} {user.lastName} (
-                      {user.email})
+                      {person.profilePicture} {person.firstName} {person.lastName} (
+                      {person.email})
 
-                      {user.match === true ? (
+                      {person.match === true ? (
                         <Button
                         variant="success"
                         type="button"
@@ -151,7 +146,7 @@ export default function AddAFriend() {
                             variant="primary"
                             type="submit"
                             onClick={(e) => {
-                              setFormData({ recipient: user.email });
+                              setFormData({ recipient: person.email });
                               e.currentTarget.classList.add("disabled");
                               e.currentTarget.classList.replace(
                                 "btn-primary",

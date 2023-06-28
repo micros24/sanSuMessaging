@@ -69,6 +69,7 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
   });
   if (isNewLogin === true) {
     // re-render
+    isNewLogin = false;
     refetch();
   }
 
