@@ -20,7 +20,6 @@ export default function ChatWindow() {
   const [errors, setErrors] = useState(Object);
 
   // const { loading, data, error } = useQuery(GET_USERS);
-  // //TODO: add logic to find who are your friends
 
   // if (error) {
   //   console.log(error);

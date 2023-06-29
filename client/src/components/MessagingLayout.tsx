@@ -34,6 +34,10 @@ export default function MessagingLayout() {
     // TODO: update ChatWindow on clicking a friend
   };
 
+  const handleOnMessageSend = () => {
+    
+  };
+
   return (
     <div className="vh-100">
       <FriendRequestsModal isNewLogin={true} />
@@ -80,7 +84,7 @@ export default function MessagingLayout() {
               marginLeft: "1%",
             }}
           >
-            <ChatMessage />
+            <ChatMessage onMessageSend={handleOnMessageSend} />
           </Row>
         </Col>
       </Row>

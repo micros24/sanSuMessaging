@@ -67,9 +67,11 @@ module.exports =
         deleteFriendRequest(
             sender: String!
         ): FriendRequestModel
-        scheduleOperation(
-            name: String!
-        ): String!
+        editUserDetails(
+            firstName: String!
+            lastName: String!
+            profilePicture: String
+        ): UserModel!
     }
     type Subscription {
         newMessage(

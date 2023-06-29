@@ -1,9 +1,9 @@
-// interface Props {
-//   onSend: () => void;
-// }
-// { onSend }: Props
+interface Props {
+  onMessageSend: () => void;
+}
 
-export default function ChatMessage() {
+
+export default function ChatMessage({ onMessageSend }: Props) {
   return (
     <div className="input-group">
       <input
@@ -15,7 +15,7 @@ export default function ChatMessage() {
         aria-describedby="btnSend"
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            // onSend();
+            onMessageSend();
           }
         }}
       />
@@ -24,7 +24,7 @@ export default function ChatMessage() {
         type="button"
         id="btnSend"
         onClick={() => {
-          // onSend();
+          onMessageSend();
         }}
       >
         Send

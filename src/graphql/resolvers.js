@@ -8,6 +8,7 @@ const getUsersProvider = require('./queries/getUsers');
 const getMessagesProvider = require('./queries/getMessages');
 const getFriendsProvider = require('./queries/getFriends');
 const getFriendRequestsProvider = require('./queries/getFriendRequests');
+const editUserDetailsProvider = require('./mutations/editUserDetails');
 
 const { UserModel } = require('../models');
 const { withFilter } = require("graphql-subscriptions")
@@ -50,6 +51,9 @@ module.exports = {
     },
     deleteFriendRequest: (_, { sender }, { user }) => {
         return deleteFriendRequestProvider(sender, user);
+    },
+    editUserDetails: (_, newDetails, { user }) => {
+        return editUserDetailsProvider(UserModel, newDetails, user, pubSub);
     }
   },
   Subscription: {
