@@ -54,14 +54,28 @@ module.exports = {
   },
   Subscription: {
     newMessage: {
-        subscribe: () => pubSub.asyncIterator('NEW_MESSAGE')
+        subscribe: withFilter(
+            //first parameter
+            (_, __, { user }) => {
+                if (!user) throw new GraphQlError('Unauthenticated');
+                return pubSub.asyncIterator('NEW_MESSAGE');
+            },
+            //second parameter
+            ({ newMessage }, { recipient }) => {
+                if (newMessage.to === recipient) {
+                    return true;
+                }
+            return false;
+            }
+        )
+        //subscribe: () => pubSub.asyncIterator('NEW_MESSAGE')
     },
     newFriendRequest: {
         subscribe: withFilter(
             //first parameter
             (_, __, { user }) => {
                 if (!user) throw new GraphQlError('Unauthenticated');
-                return pubSub.asyncIterator(['NEW_FRIEND_REQUEST']);
+                return pubSub.asyncIterator('NEW_FRIEND_REQUEST');
             },
             //second parameter
             ({ newFriendRequest }, { recipient }) => {
