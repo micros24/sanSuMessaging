@@ -1,3 +1,4 @@
+const { profile } = require('console');
 const { GraphQLError } = require('graphql');
 
 module.exports = async (UserModel , newDetails, user, pubSub) => {
@@ -7,14 +8,23 @@ module.exports = async (UserModel , newDetails, user, pubSub) => {
         // Validation
         if(!user) throw new GraphQLError('Unauthenticated');
 
-        const newDetails = UserModel.findOne({
+        const newDetails = await UserModel.findOne({
             where: {
                 email: user.email
             }
         });
-        newDetails.firstName = firstName;
-        newDetails.lastName = lastName;
-        newDetails.profilePicture = profilePicture;
+
+        newDetails.set({
+            firstName: firstName,
+            lastName: lastName,
+            profilePicture: profilePicture
+        })
+
+        // newDetails.firstName = firstName;
+        // newDetails.lastName = lastName;
+        // newDetails.profilePicture = profilePicture;
+
+        await newDetails.save();
 
         // pubSub.publish("NEW_FRIEND", { newFriend: friend, loggedInUser: user.email });
 
