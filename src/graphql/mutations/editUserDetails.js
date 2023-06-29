@@ -1,4 +1,3 @@
-const { profile } = require('console');
 const { GraphQLError } = require('graphql');
 
 module.exports = async (UserModel , newDetails, user, pubSub) => {
@@ -20,13 +19,7 @@ module.exports = async (UserModel , newDetails, user, pubSub) => {
             profilePicture: profilePicture
         })
 
-        // newDetails.firstName = firstName;
-        // newDetails.lastName = lastName;
-        // newDetails.profilePicture = profilePicture;
-
         await newDetails.save();
-
-        // pubSub.publish("NEW_FRIEND", { newFriend: friend, loggedInUser: user.email });
 
         return newDetails;
     } catch (error) {

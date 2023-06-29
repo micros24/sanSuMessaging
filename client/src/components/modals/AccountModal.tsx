@@ -7,10 +7,15 @@ import { useNavigate, Link, redirect } from "react-router-dom";
 import { Col, Form, Row } from "react-bootstrap";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { JWT_SECRET } from '../../../../src/config/env.json';
+import jwt from 'jsonwebtoken';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+//TODO: token generation when editing account details
 
 const EDIT_USER_DETAILS = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation editUserDetails($firstName: String!, $lastName: String!, $profilePicture: String) {
+    editUserDetails(firstName: $firstName, lastName: $lastName, profilePicture: $profilePicture) {
       email
       firstName
       lastName
@@ -25,11 +30,12 @@ interface Props {
 
 export default function AccountModal({ showAddAFriendButton }: Props) {
   const [show, setShow] = useState(false);
+  const [toastText, setToastText] = useState("");
+  const notify = () => toast(toastText);
   const [errors, setErrors] = useState(Object);
   const dispatch = useAuthDispatch();
   const user = useAuthState().user;
   const handleClose = () => setShow(false);
-  // TODO: handle saving changes from profile edits
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -40,8 +46,22 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
   });
 
   const [editUserDetails, { loading }] = useMutation(EDIT_USER_DETAILS, {
-    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
-    variables: formData,
+    onError: (error) =>  console.log(error), //setErrors(error.graphQLErrors[0].extensions.errors),
+    onCompleted(data) {
+      let newUserData = data.editUserDetails;
+      let tokenData = {
+        email: user.email,
+        firstName: newUserData.firstName,
+        lastName: newUserData.lastName,
+        profilePicture: newUserData.profilePicture
+      }
+
+    // Token generation
+    user.token = jwt.sign(tokenData, JWT_SECRET, { expiresIn: 60 * 60 }); 
+
+      dispatch({ type: "LOGIN", payload: user });
+    },
+    variables: formData
     }
   );
 
@@ -52,7 +72,8 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   const handleEditProfileFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // TODO: backend command
+    editUserDetails();
+    notify();
   };
 
   const footerOverride = {
@@ -61,6 +82,14 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        newestOnTop={false}
+        hideProgressBar={true}
+        theme="colored"
+        closeOnClick
+      />
       <Button
         id="btnShowAccountModal"
         variant="primary"
@@ -138,8 +167,10 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                   </Form.Label>
                   <Form.Control
                     className={errors.firstName && "is-invalid"}
+                    type="text"
                     placeholder="First name"
-                    value={user.firstName}
+                    defaultValue={user.firstName}
+                    disabled={loading}
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
@@ -154,18 +185,26 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                   </Form.Label>
                   <Form.Control
                     className={errors.email && "is-invalid"}
+                    type="text"
+                    defaultValue={user.lastName}
                     placeholder="Last name"
-                    value={user.lastName}
+                    disabled={loading}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   />
                 </Form.Group>
               </Col>
             </Row>
+            <Button 
+              id="btnSubmitEditProfileForm"
+              hidden 
+              type="submit" 
+              onClick={() => setToastText("Account details have been updated!")}
+            />
           </Form>
         </Modal.Body>
         <Modal.Footer style={footerOverride}>
           <div>
-            <Button variant="danger" onClick={handleLogOut}>
+            <Button variant="danger" disabled={loading} onClick={handleLogOut}>
               Logout
             </Button>
           </div>
@@ -175,15 +214,16 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
               type="button"
               onClick={() => navigate("/addFriend")}
               hidden={showAddAFriendButton}
+              disabled={loading}
             >
               Add a friend
             </Button>
           </div>
           <div>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" disabled={loading} onClick={handleClose}>
               Cancel
             </Button>{" "}
-            <Button variant="primary" type="submit" onClick={handleClose}>
+            <Button variant="primary" disabled={loading} onClick={() => document.getElementById("btnSubmitEditProfileForm")?.click()}>
               Save changes
             </Button>
           </div>
