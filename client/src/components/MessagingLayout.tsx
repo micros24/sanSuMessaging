@@ -6,9 +6,9 @@ import ChatWindowTop from "./ChatWindowTop";
 import FriendRequests from "./FriendRequests";
 import AccountModal from "./modals/AccountModal";
 import FriendRequestsModal from "./modals/FriendRequestsModal";
+import ChangePasswordModal from "./modals/ChangePasswordModal";
 import { useAuthState } from "../context/auth";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Col, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,7 +37,7 @@ export default function MessagingLayout() {
   };
 
   const handleOnMessageSend = () => {
-    
+    // TODO: sending of message backend and frontend
   };
 
   return (
@@ -52,6 +52,7 @@ export default function MessagingLayout() {
       />
       <FriendRequestsModal isNewLogin={true} />
       <AccountModal />
+      <ChangePasswordModal />
       <FriendRequests
         isNewLogin={true}
         onFriendRequestsClick={handleFriendRequestsClick}

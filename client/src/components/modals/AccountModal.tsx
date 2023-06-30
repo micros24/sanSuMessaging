@@ -65,10 +65,17 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     notify();
   };
 
+  const handleChangePassword = () => {
+    const changePasswordModal = document.getElementById("btnShowChangePasswordModal");
+    handleClose();
+    changePasswordModal?.click();
+  }
+
   const footerOverride = {
     justifyContent: "space-between",
   };
 
+  // TODO: profile picture editing
   return (
     <>
       <Button
@@ -109,8 +116,11 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
               </svg>
             </Link>
           </p>
-          <Button variant="primary" type="submit">
+          <Button variant="primary">
             Edit profile picture
+          </Button> {" "}
+          <Button variant="warning" onClick={handleChangePassword}>
+            Change password
           </Button>
           <hr/>
           <Form onSubmit={handleEditProfileFormSubmit}>
