@@ -10,10 +10,13 @@ module.exports = async ({ file }) => {
     const generatedUUID = uuidv4();
     const extension = path.extname(filename);
     const newFileName = generatedUUID + "-" + Date.now() + extension;
-    const pathName = path.join(__dirname, `../../public/images/${newFileName}`);
+    const pathName = path.join(
+      __dirname,
+      `../../../public/images/${newFileName}`
+    );
     await stream.pipe(fs.createWriteStream(pathName));
 
-    return { url: `http://localhost:4000/public/images/${newFileName}` };
+    return { url: `http://localhost:4000/images/${newFileName}` };
   } catch (error) {
     throw error;
   }
