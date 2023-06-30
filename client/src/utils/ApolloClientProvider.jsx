@@ -1,8 +1,8 @@
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
 import { setContext } from "@apollo/client/link/context";
-import { split, HttpLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
+import { split, HttpLink } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
 import React from "react";
 import {
   ApolloClient,
@@ -19,27 +19,29 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `${token}` : "",
-    }
+    },
   };
 });
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql"
+  uri: "http://localhost:4000/graphql",
 });
 
-const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/graphql',
-  connectionParams: {
-    Authorization: `${localStorage.getItem('token')}`
-  }
-}));
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: "ws://localhost:4000/graphql",
+    connectionParams: {
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+  })
+);
 
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
     );
   },
   wsLink,
@@ -53,4 +55,4 @@ const client = new ApolloClient({
 
 export default function ApolloClientProvider(props) {
   return <Provider client={client} {...props} />;
-};
+}

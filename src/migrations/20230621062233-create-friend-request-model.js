@@ -1,31 +1,31 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('friendRequests', {
+    await queryInterface.createTable("friendRequests", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       uuid: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       sender: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: false,
-        references: { model: 'users', key: 'email' }
+        references: { model: "users", key: "email" },
       },
       recipient: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: false,
-        references: { model: 'users', key: 'email' }
+        references: { model: "users", key: "email" },
       },
       senderFirstName: {
         type: Sequelize.STRING,
@@ -37,19 +37,19 @@ module.exports = {
       },
       senderProfilePicture: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('friendRequests');
-  }
+    await queryInterface.dropTable("friendRequests");
+  },
 };

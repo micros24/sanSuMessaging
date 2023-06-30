@@ -1,20 +1,20 @@
-import { ApolloServer } from '@apollo/server';
-import { expressMiddleware } from '@apollo/server/express4';
-import express from 'express';
-import pkg1 from './models/index.js';
-import resolversProvider from './graphql/resolvers.js'
-import typeDefsProvider from './graphql/typeDefs.js'
-import contextMiddleware from './utils/contextMiddleware.js';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import { createServer } from 'http';
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { WebSocketServer } from 'ws';
-import { useServer } from 'graphql-ws/lib/use/ws';
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import express from "express";
+import pkg1 from "./models/index.js";
+import resolversProvider from "./graphql/resolvers.js";
+import typeDefsProvider from "./graphql/typeDefs.js";
+import contextMiddleware from "./utils/contextMiddleware.js";
+import bodyParser from "body-parser";
+import cors from "cors";
+import { createServer } from "http";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 
 const { sequelize } = pkg1;
-const typeDefs = typeDefsProvider;  // The GraphQL schema
+const typeDefs = typeDefsProvider; // The GraphQL schema
 const resolvers = resolversProvider; // A map of functions which return data for the schema.
 const url = 4000;
 const app = express();
@@ -24,19 +24,22 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 // Creating the WebSocket server
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: '/graphql',
+  path: "/graphql",
 });
 
 // Hand in the schema we just created and have the
 // WebSocketServer start listening.
-const serverCleanup = useServer({ 
+const serverCleanup = useServer(
+  {
     schema,
-    context: contextMiddleware
-  }, 
+    context: contextMiddleware,
+  },
   wsServer
 );
 
-interface MyContext {contextMiddleware}
+interface MyContext {
+  contextMiddleware;
+}
 
 const server = new ApolloServer<MyContext>({
   schema,
@@ -49,24 +52,31 @@ const server = new ApolloServer<MyContext>({
         return {
           async drainServer() {
             await serverCleanup.dispose();
-          }
+          },
         };
-      }
-    }
+      },
+    },
   ],
 });
 
 await server.start();
-app.use('/graphql',   cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server, {
-  context: contextMiddleware
-}));
+app.use(
+  "/graphql",
+  cors<cors.CorsRequest>(),
+  bodyParser.json(),
+  expressMiddleware(server, {
+    context: contextMiddleware,
+  })
+);
 
 httpServer.listen(url, () => {
   console.log(`🚀 Query endpoint ready at http://localhost:${url}/graphql`);
-  console.log(`🚀 Subscription endpoint ready at ws://localhost:${url}/graphql`);
-})
+  console.log(
+    `🚀 Subscription endpoint ready at ws://localhost:${url}/graphql`
+  );
+});
 
 sequelize
-    .authenticate()
-    .then(() => console.log('Database connected!'))
-    .catch((err) => console.log(err));
+  .authenticate()
+  .then(() => console.log("Database connected!"))
+  .catch((err) => console.log(err));

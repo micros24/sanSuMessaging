@@ -2,14 +2,29 @@ import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
 import { useAuthDispatch, useAuthState } from "../../context/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { Col, Form, Row, Tooltip, Button, Modal } from "react-bootstrap";
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import {
+  Col,
+  Form,
+  Row,
+  Tooltip,
+  Button,
+  Modal,
+  OverlayTrigger,
+} from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const EDIT_USER_DETAILS = gql`
-  mutation editUserDetails($firstName: String!, $lastName: String!, $profilePicture: String) {
-    editUserDetails(firstName: $firstName, lastName: $lastName, profilePicture: $profilePicture) {
+  mutation editUserDetails(
+    $firstName: String!
+    $lastName: String!
+    $profilePicture: String
+  ) {
+    editUserDetails(
+      firstName: $firstName
+      lastName: $lastName
+      profilePicture: $profilePicture
+    ) {
       email
       firstName
       lastName
@@ -25,7 +40,7 @@ interface Props {
 
 export default function AccountModal({ showAddAFriendButton }: Props) {
   const [show, setShow] = useState(false);
-  const [toastText, setToastText] = useState("");
+  const [toastText] = useState("Account details have been updated!");
   const notify = () => toast(toastText);
   const [errors, setErrors] = useState(Object);
   const dispatch = useAuthDispatch();
@@ -37,18 +52,17 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     email: "",
     firstName: "",
     lastName: "",
-    profilePicture: ""
+    profilePicture: "",
   });
-  
+
   const [editUserDetails, { loading }] = useMutation(EDIT_USER_DETAILS, {
-    onError: (error) =>  setErrors(error.graphQLErrors[0].extensions.errors),
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
       // refresh token on accout details edit
       dispatch({ type: "LOGIN", payload: data.editUserDetails });
     },
-    variables: formData
-    }
-  );
+    variables: formData,
+  });
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
@@ -63,10 +77,17 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
   };
 
   const handleChangePassword = () => {
-    const changePasswordModal = document.getElementById("btnShowChangePasswordModal");
+    const changePasswordModal = document.getElementById(
+      "btnShowChangePasswordModal"
+    );
     handleClose();
     changePasswordModal?.click();
-  }
+  };
+
+  const handleChangeProfilePicture = () => {
+    let fileUpload = document.getElementById("accountModalProfilePictureEdit");
+    fileUpload?.click();
+  };
 
   const footerOverride = {
     justifyContent: "space-between",
@@ -75,12 +96,20 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
   // TODO: profile picture editing
   return (
     <>
+      <Form.Control
+        id="accountModalProfilePictureEdit"
+        type="file"
+        hidden
+        onChange={(e) =>
+          setFormData({ ...formData, profilePicture: e.target.value })
+        }
+      />
       <Button
         id="btnShowAccountModal"
         variant="primary"
         onClick={handleShow}
         hidden
-      ></Button>
+      />
       <Modal
         size="lg"
         show={show}
@@ -113,13 +142,13 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
               </svg>
             </Link>
           </p>
-          <Button variant="primary">
+          <Button variant="primary" onClick={handleChangeProfilePicture}>
             Edit profile picture
-          </Button> {" "}
+          </Button>{" "}
           <Button variant="warning" onClick={handleChangePassword}>
             Change password
           </Button>
-          <hr/>
+          <hr />
           <Form onSubmit={handleEditProfileFormSubmit}>
             <Row>
               <Col>
@@ -133,15 +162,17 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                       <Tooltip id={`tooltip-top`}>
                         Contact an admin to change your email address
                       </Tooltip>
-                      }
+                    }
                   >
-                  <Form.Control
-                    className={errors.email && "is-invalid"}
-                    placeholder="Email address"
-                    disabled
-                    value={user.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
+                    <Form.Control
+                      className={errors.email && "is-invalid"}
+                      placeholder="Email address"
+                      disabled
+                      value={user.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                    />
                   </OverlayTrigger>
                 </Form.Group>
               </Col>
@@ -177,17 +208,14 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                     defaultValue={user.lastName}
                     placeholder="Last name"
                     disabled={loading}
-                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
                   />
                 </Form.Group>
               </Col>
             </Row>
-            <Button 
-              id="btnSubmitEditProfileForm"
-              hidden 
-              type="submit" 
-              onClick={() => setToastText("Account details have been updated!")}
-            />
+            <Button id="btnSubmitEditProfileForm" hidden type="submit" />
           </Form>
         </Modal.Body>
         <Modal.Footer style={footerOverride}>
@@ -208,10 +236,20 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
             </Button>
           </div>
           <div>
-            <Button variant="secondary" disabled={loading} onClick={handleClose}>
+            <Button
+              variant="secondary"
+              disabled={loading}
+              onClick={handleClose}
+            >
               Cancel
             </Button>{" "}
-            <Button variant="primary" disabled={loading} onClick={() => document.getElementById("btnSubmitEditProfileForm")?.click()}>
+            <Button
+              variant="primary"
+              disabled={loading}
+              onClick={() =>
+                document.getElementById("btnSubmitEditProfileForm")?.click()
+              }
+            >
               Save changes
             </Button>
           </div>

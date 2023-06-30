@@ -1,5 +1,4 @@
-module.exports = 
-    `#graphql
+module.exports = `#graphql
     type UserModel {
         email: String!
         firstName: String!

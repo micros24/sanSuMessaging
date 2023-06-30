@@ -1,26 +1,29 @@
-const { GraphQLError } = require('graphql');
-const { FriendsModel } = require('../../models');
+const { GraphQLError } = require("graphql");
+const { FriendsModel } = require("../../models");
 
-module.exports = async (UserModel ,sender, user, pubSub) => {
-    try {
-        // Validation
-        if(!user) throw new GraphQLError('Unauthenticated');
+module.exports = async (UserModel, sender, user, pubSub) => {
+  try {
+    // Validation
+    if (!user) throw new GraphQLError("Unauthenticated");
 
-        const addFriend = await FriendsModel.create({
-            sender: sender,
-            recipient: user.email
-        });
+    const addFriend = await FriendsModel.create({
+      sender: sender,
+      recipient: user.email,
+    });
 
-        const friend = await UserModel.findOne({
-            where: {
-                email: sender
-            }
-        });
+    const friend = await UserModel.findOne({
+      where: {
+        email: sender,
+      },
+    });
 
-        pubSub.publish("NEW_FRIEND", { newFriend: friend, loggedInUser: user.email });
+    pubSub.publish("NEW_FRIEND", {
+      newFriend: friend,
+      loggedInUser: user.email,
+    });
 
-        return addFriend;
-    } catch (error) {
-        throw error;
-    }
+    return addFriend;
+  } catch (error) {
+    throw error;
+  }
 };

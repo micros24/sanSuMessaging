@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class FriendRequestSentCheckerModel extends Model {
     /**
@@ -11,31 +11,34 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  FriendRequestSentCheckerModel.init({
-    email: {
+  FriendRequestSentCheckerModel.init(
+    {
+      email: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        unique: true
-    },
-    firstName: {
+        unique: true,
+      },
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    lastName: {
+      },
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    profilePicture: {
+      },
+      profilePicture: {
         type: DataTypes.STRING,
-        allowNull: true
-    },
-    match: {
+        allowNull: true,
+      },
+      match: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: "FriendRequestSentCheckerModel",
     }
-  }, {
-    sequelize,
-    modelName: 'FriendRequestSentCheckerModel'
-  });
+  );
   return FriendRequestSentCheckerModel;
 };

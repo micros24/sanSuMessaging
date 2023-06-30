@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class MessageModel extends Model {
     /**
@@ -11,33 +11,36 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  MessageModel.init({
-    uuid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true
+  MessageModel.init(
+    {
+      uuid: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
+      content: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      from: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      to: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    from: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    to: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: "MessageModel",
+      tableName: "messages",
     }
-  }, {
-    sequelize,
-    modelName: 'MessageModel',
-    tableName: 'messages'
-  });
+  );
   return MessageModel;
 };

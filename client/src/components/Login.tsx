@@ -27,15 +27,15 @@ export default function Login() {
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
-  
+
   const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
       dispatch({ type: "LOGIN", payload: data.login });
       navigate("/messaging");
-    }
+    },
   });
 
   return (

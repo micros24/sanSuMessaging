@@ -32,7 +32,7 @@ export default function MessagingLayout() {
     friendRequestsModal?.click();
   };
 
-  const handleFriendClick= () => {
+  const handleFriendClick = () => {
     // TODO: update ChatWindow on clicking a friend
   };
 
@@ -67,9 +67,7 @@ export default function MessagingLayout() {
             className="overflow-auto col-2 mx-0"
             style={{ position: "absolute", height: "91vh", marginTop: "2vh" }}
           >
-            <SideBar 
-              onFriendClick={handleFriendClick}
-            />
+            <SideBar onFriendClick={handleFriendClick} />
           </Row>
         </Col>
         <Col className="col-10 mt-3">

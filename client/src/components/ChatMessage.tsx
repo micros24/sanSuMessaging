@@ -2,7 +2,6 @@ interface Props {
   onMessageSend: () => void;
 }
 
-
 export default function ChatMessage({ onMessageSend }: Props) {
   return (
     <div className="input-group">

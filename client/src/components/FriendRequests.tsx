@@ -16,7 +16,8 @@ const FRIEND_REQUESTS_QUERY = gql`
 const FRIEND_REQUESTS_SUBSCRIPTION = gql`
   subscription newFriendRequest($recipient: String!) {
     newFriendRequest(recipient: $recipient) {
-      sender recipient
+      sender
+      recipient
     }
   }
 `;
@@ -28,7 +29,7 @@ interface Props {
 
 export default function FriendRequests({
   isNewLogin,
-  onFriendRequestsClick
+  onFriendRequestsClick,
 }: Props) {
   const user = useAuthState().user;
   const [notificationCount, setNotificationCount] = useState(0);
@@ -36,22 +37,24 @@ export default function FriendRequests({
   const notify = () => toast(toastText);
 
   const { refetch } = useQuery(FRIEND_REQUESTS_QUERY, {
-    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
       setNotificationCount(data.getFriendRequests.length);
-    }
+    },
   });
 
   const {} = useSubscription(FRIEND_REQUESTS_SUBSCRIPTION, {
-    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onData() {
       let plusOne = notificationCount + 1;
       setNotificationCount(plusOne);
       notify();
     },
     variables: {
-      recipient: user.email
-    }
+      recipient: user.email,
+    },
   });
 
   // re-render

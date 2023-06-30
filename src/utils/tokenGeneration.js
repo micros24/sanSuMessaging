@@ -1,5 +1,5 @@
-const { JWT_SECRET } = require('../config/env.json');
-const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require("../config/env.json");
+const jwt = require("jsonwebtoken");
 
 module.exports = (user, tokenData) => {
   // Token generation

@@ -11,7 +11,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" index element={<Login />}  />
+          <Route path="/" index element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="/messaging" element={<MessagingLayout />} />
           <Route path="/addFriend" element={<AddAFriend />} />

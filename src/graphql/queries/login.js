@@ -1,47 +1,48 @@
-const tokenGenerationProvider = require('../../utils/tokenGeneration');
-const { GraphQLError } = require ('graphql');
+const tokenGenerationProvider = require("../../utils/tokenGeneration");
+const { GraphQLError } = require("graphql");
 const bcrypt = require("bcryptjs");
 
 module.exports = async (UserModel, args) => {
-    const { email, password } = args;
-    let errors = {};
+  const { email, password } = args;
+  let errors = {};
 
-    try {
-        // Input validation
-        if(email.trim() === '') errors.email = 'Email cannot be empty';
-        if(password === '') errors.password = 'Password cannot be empty';
-        
-        if(Object.keys(errors).length > 0) {
-            throw errors;
-        }
+  try {
+    // Input validation
+    if (email.trim() === "") errors.email = "Email cannot be empty";
+    if (password === "") errors.password = "Password cannot be empty";
 
-        // Get user data
-        const user = await UserModel.findOne({ where: {email}});
-
-        // Check if account exists
-        if(user === null) {
-            errors.email = 'Email is not registered';
-            throw errors;
-        // Check if password is correct
-        } else if(!await bcrypt.compare(password, user.dataValues.password)) {
-            errors.password = "Credentials does not match";
-            throw errors;
-        }
-
-        let tokenData = {
-            email: user.dataValues.email,
-            firstName: user.dataValues.firstName,
-            lastName: user.dataValues.lastName,
-            profilePicture: user.dataValues.profilePicture
-        }
-
-        // Token generation
-        tokenGenerationProvider(user, tokenData);
-        return user;
-    } catch (_) {
-        throw new GraphQLError('CredentialsViolation', {
-            extensions: { 
-                errors: errors }
-            });
+    if (Object.keys(errors).length > 0) {
+      throw errors;
     }
+
+    // Get user data
+    const user = await UserModel.findOne({ where: { email } });
+
+    // Check if account exists
+    if (user === null) {
+      errors.email = "Email is not registered";
+      throw errors;
+      // Check if password is correct
+    } else if (!(await bcrypt.compare(password, user.dataValues.password))) {
+      errors.password = "Credentials does not match";
+      throw errors;
+    }
+
+    let tokenData = {
+      email: user.dataValues.email,
+      firstName: user.dataValues.firstName,
+      lastName: user.dataValues.lastName,
+      profilePicture: user.dataValues.profilePicture,
+    };
+
+    // Token generation
+    tokenGenerationProvider(user, tokenData);
+    return user;
+  } catch (_) {
+    throw new GraphQLError("CredentialsViolation", {
+      extensions: {
+        errors: errors,
+      },
+    });
+  }
 };

@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class FriendRequestModel extends Model {
     /**
@@ -11,39 +11,42 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  FriendRequestModel.init({
-    uuid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true
+  FriendRequestModel.init(
+    {
+      uuid: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
+      sender: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: false,
+      },
+      recipient: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: false,
+      },
+      senderFirstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      senderLastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      senderProfilePicture: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-    sender: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: false
-    },
-    recipient: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      unique: false
-    },
-    senderFirstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    senderLastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    senderProfilePicture: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-  }, {
-    sequelize,
-    modelName: 'FriendRequestModel',
-    tableName: 'friendRequests'
-  });
+    {
+      sequelize,
+      modelName: "FriendRequestModel",
+      tableName: "friendRequests",
+    }
+  );
   return FriendRequestModel;
 };

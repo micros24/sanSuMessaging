@@ -5,12 +5,16 @@ import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import SideBarTop from "./SideBarTop";
 import { ListGroup, Button, Form, Row } from "react-bootstrap";
 import AccountModal from "./modals/AccountModal";
-import { FriendRequestSentCheckerModel } from "../../../src/models"
+import { FriendRequestSentCheckerModel } from "../../../src/models";
 
 const GET_USERS_QUERY = gql`
   query getUsers($name: String!) {
     getUsers(name: $name) {
-      email firstName lastName profilePicture match
+      email
+      firstName
+      lastName
+      profilePicture
+      match
     }
   }
 `;
@@ -45,7 +49,7 @@ export default function AddAFriend() {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
       setUsers(data.getUsers);
-    }
+    },
   });
 
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
@@ -127,35 +131,33 @@ export default function AddAFriend() {
                 users.map((person: FriendRequestSentCheckerModel) => (
                   <ListGroup.Item key={person.email}>
                     <div className="d-flex justify-content-between align-items-center">
-                      {person.profilePicture} {person.firstName} {person.lastName} (
-                      {person.email})
-
+                      {person.profilePicture} {person.firstName}{" "}
+                      {person.lastName} ({person.email})
                       {person.match === true ? (
                         <Button
-                        variant="success"
-                        type="button"
-                        className="disabled"
+                          variant="success"
+                          type="button"
+                          className="disabled"
                         >
                           Request sent!
                         </Button>
                       ) : (
-                            <Button
-                            variant="primary"
-                            type="submit"
-                            onClick={(e) => {
-                              setFormData({ recipient: person.email });
-                              e.currentTarget.classList.add("disabled");
-                              e.currentTarget.classList.replace(
-                                "btn-primary",
-                                "btn-success"
-                              );
-                              e.currentTarget.innerText = "Request sent!";
-                            }}
-                            >
-                              Send request
-                            </Button>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          onClick={(e) => {
+                            setFormData({ recipient: person.email });
+                            e.currentTarget.classList.add("disabled");
+                            e.currentTarget.classList.replace(
+                              "btn-primary",
+                              "btn-success"
+                            );
+                            e.currentTarget.innerText = "Request sent!";
+                          }}
+                        >
+                          Send request
+                        </Button>
                       )}
-
                     </div>
                   </ListGroup.Item>
                 ))
