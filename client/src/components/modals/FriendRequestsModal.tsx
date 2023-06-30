@@ -45,7 +45,6 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
   const [users, setUsers] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const showToastonClick = document.getElementById("btnShowToast");
   const notify = () => toast(toastText);
   const [data, setData] = useState({
     sender: "",
@@ -79,7 +78,6 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
     delete temp[index];
     setUsers(temp);
     deleteFriendRequest();
-    showToastonClick?.click();
     notify();
   };
 
