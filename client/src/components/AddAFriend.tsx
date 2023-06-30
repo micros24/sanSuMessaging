@@ -3,10 +3,7 @@ import { useAuthState } from "../context/auth";
 import { FormEvent, useState } from "react";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import SideBarTop from "./SideBarTop";
-import ListGroup from "react-bootstrap/ListGroup";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { ListGroup, Button, Form, Row } from "react-bootstrap";
 import AccountModal from "./modals/AccountModal";
 import { FriendRequestSentCheckerModel } from "../../../src/models"
 

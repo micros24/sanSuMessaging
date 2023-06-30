@@ -1,12 +1,9 @@
 import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import { useAuthDispatch, useAuthState } from "../../context/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row, Tooltip, Button, Modal } from "react-bootstrap";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

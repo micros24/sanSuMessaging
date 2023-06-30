@@ -2,9 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuthState } from "../context/auth";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { Button, Form, Row } from "react-bootstrap";
 
 const REGISTER_USER = gql`
   mutation register(

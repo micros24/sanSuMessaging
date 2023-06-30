@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useAuthDispatch } from "../context/auth";
-import Row from "react-bootstrap/Row";
-import { Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
 // const GET_FRIENDS = gql`
 //   query getFriends {

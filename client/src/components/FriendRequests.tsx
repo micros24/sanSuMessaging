@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useAuthState } from "../context/auth";
-import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
+import { Badge, Button } from "react-bootstrap";
 
 const FRIEND_REQUESTS_QUERY = gql`
   query getFriendRequests {

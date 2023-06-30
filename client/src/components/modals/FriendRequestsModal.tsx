@@ -1,9 +1,6 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import ListGroup from "react-bootstrap/ListGroup";
+import { Button, Modal, Form, ListGroup } from "react-bootstrap";
 import { FriendRequestModel } from "../../../../src/models";
 import { toast } from "react-toastify";
 

@@ -1,9 +1,7 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { Button, Form, Row } from "react-bootstrap";
 import { useAuthDispatch, useAuthState } from "../context/auth";
 
 const LOGIN_USER = gql`
