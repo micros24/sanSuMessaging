@@ -7,7 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Col, Form, Row } from "react-bootstrap";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const EDIT_USER_DETAILS = gql`
@@ -44,7 +44,7 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
   });
   
   const [editUserDetails, { loading }] = useMutation(EDIT_USER_DETAILS, {
-    onError: (error) =>  console.log(error), //setErrors(error.graphQLErrors[0].extensions.errors),
+    onError: (error) =>  setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
       // refresh token on accout details edit
       dispatch({ type: "LOGIN", payload: data.editUserDetails });
@@ -71,14 +71,6 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        newestOnTop={false}
-        hideProgressBar={true}
-        theme="colored"
-        closeOnClick
-      />
       <Button
         id="btnShowAccountModal"
         variant="primary"

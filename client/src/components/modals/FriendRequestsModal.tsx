@@ -4,9 +4,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
-import { ToastContainer, toast } from "react-toastify";
 import { FriendRequestModel } from "../../../../src/models";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const FRIEND_REQUESTS = gql`
   query getFriendRequests {
@@ -93,14 +92,6 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        newestOnTop={false}
-        hideProgressBar={true}
-        theme="colored"
-        closeOnClick
-      />
       <Button
         id="btnShowFriendRequestsModal"
         onClick={handleShow}

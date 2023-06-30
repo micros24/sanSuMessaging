@@ -10,6 +10,8 @@ import { useAuthState } from "../context/auth";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MessagingLayout() {
   // workaround route guard
@@ -40,6 +42,14 @@ export default function MessagingLayout() {
 
   return (
     <div className="vh-100">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        newestOnTop={false}
+        hideProgressBar={true}
+        theme="colored"
+        closeOnClick
+      />
       <FriendRequestsModal isNewLogin={true} />
       <AccountModal />
       <FriendRequests
