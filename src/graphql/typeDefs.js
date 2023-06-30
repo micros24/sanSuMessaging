@@ -72,6 +72,11 @@ module.exports =
             lastName: String!
             profilePicture: String
         ): UserModel!
+        changePassword(
+            oldPassword: String!
+            newPassword: String!
+            confirmPassword: String!
+        ): UserModel
     }
     type Subscription {
         newMessage(
