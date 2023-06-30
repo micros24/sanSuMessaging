@@ -13,7 +13,7 @@ const CHANGE_PASSWORD = gql`
 
 export default function ChangePasswordModal() {
   const [show, setShow] = useState(false);
-  const [toastText, setToastText] = useState("");
+  const [toastText] = useState("Your password have been changed!");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [errors, setErrors] = useState(Object);
@@ -35,7 +35,6 @@ export default function ChangePasswordModal() {
 
   const handleChangePasswordFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setToastText("Your password have been changed!");
     changePassword();
   };
 
@@ -46,7 +45,7 @@ export default function ChangePasswordModal() {
         variant="primary"
         onClick={handleShow}
         hidden
-      ></Button>
+      />
       <Modal 
         show={show} 
         onHide={handleClose} 

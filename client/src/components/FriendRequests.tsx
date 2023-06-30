@@ -2,6 +2,8 @@ import { useState } from "react";
 import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useAuthState } from "../context/auth";
 import { Badge, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FRIEND_REQUESTS_QUERY = gql`
   query getFriendRequests {
@@ -30,6 +32,8 @@ export default function FriendRequests({
 }: Props) {
   const user = useAuthState().user;
   const [notificationCount, setNotificationCount] = useState(0);
+  const [toastText] = useState("You have received a friend request");
+  const notify = () => toast(toastText);
 
   const { refetch } = useQuery(FRIEND_REQUESTS_QUERY, {
     onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
@@ -43,6 +47,7 @@ export default function FriendRequests({
     onData() {
       let plusOne = notificationCount + 1;
       setNotificationCount(plusOne);
+      notify();
     },
     variables: {
       recipient: user.email

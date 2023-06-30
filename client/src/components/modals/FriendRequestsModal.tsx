@@ -91,7 +91,7 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
         id="btnShowFriendRequestsModal"
         onClick={handleShow}
         hidden
-      ></Button>
+      />
       <Modal size="lg" show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Friend Requests</Modal.Title>

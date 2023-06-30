@@ -48,6 +48,7 @@ export default function MessagingLayout() {
         newestOnTop={false}
         hideProgressBar={true}
         theme="colored"
+        pauseOnFocusLoss={false}
         closeOnClick
       />
       <FriendRequestsModal isNewLogin={true} />

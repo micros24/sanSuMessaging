@@ -2,7 +2,6 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useAuthState } from "../context/auth";
 import { useState } from "react";
 import { UserModel } from "../../../src/models";
-// TODO: add re-rendering
 
 const GET_FRIENDS_QUERY = gql`
   query getFriends {
