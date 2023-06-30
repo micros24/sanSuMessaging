@@ -21,7 +21,7 @@ export default function Login() {
   // workaround route guard
   const user = useAuthState().user;
   if (user) {
-    return <Navigate to="messaging" />;
+    return <Navigate to="/messaging" />;
   }
 
   const dispatch = useAuthDispatch();
@@ -29,15 +29,15 @@ export default function Login() {
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
-
+  
   const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
       dispatch({ type: "LOGIN", payload: data.login });
-      navigate("messaging"); // Redirect to Messages
-    },
+      navigate("/messaging");
+    }
   });
 
   return (

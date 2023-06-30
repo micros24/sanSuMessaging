@@ -33,11 +33,6 @@ const authReducer = (state, action) => {
                 // Set user to null
                 user: null
             };
-        case "EDITED_USER":
-            return {
-                ...state,
-                user: action.payload
-            }
         default:
             throw new Error(`Unknown action type:  ${action.type}`);
     }

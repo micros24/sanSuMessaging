@@ -11,10 +11,10 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" index Component={Login} />
-          <Route path="register" Component={Register} />
-          <Route path="messaging" Component={MessagingLayout} />
-          <Route path="/addFriend" Component={AddAFriend} />
+          <Route path="/" index element={<Login />}  />
+          <Route path="register" element={<Register />} />
+          <Route path="/messaging" element={<MessagingLayout />} />
+          <Route path="/addFriend" element={<AddAFriend />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

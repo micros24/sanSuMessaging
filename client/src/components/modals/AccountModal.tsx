@@ -3,15 +3,12 @@ import { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useAuthDispatch, useAuthState } from "../../context/auth";
-import { useNavigate, Link, redirect } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Col, Form, Row } from "react-bootstrap";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { JWT_SECRET } from '../../../../src/config/env.json';
-import jwt from 'jsonwebtoken';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//TODO: token generation when editing account details
 
 const EDIT_USER_DETAILS = gql`
   mutation editUserDetails($firstName: String!, $lastName: String!, $profilePicture: String) {
@@ -20,6 +17,7 @@ const EDIT_USER_DETAILS = gql`
       firstName
       lastName
       profilePicture
+      token
     }
   }
 `;
@@ -44,22 +42,12 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     lastName: "",
     profilePicture: ""
   });
-
+  
   const [editUserDetails, { loading }] = useMutation(EDIT_USER_DETAILS, {
     onError: (error) =>  console.log(error), //setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
-      let newUserData = data.editUserDetails;
-      let tokenData = {
-        email: user.email,
-        firstName: newUserData.firstName,
-        lastName: newUserData.lastName,
-        profilePicture: newUserData.profilePicture
-      }
-
-    // Token generation
-    user.token = jwt.sign(tokenData, JWT_SECRET, { expiresIn: 60 * 60 }); 
-
-      dispatch({ type: "LOGIN", payload: user });
+      // refresh token on accout details edit
+      dispatch({ type: "LOGIN", payload: data.editUserDetails });
     },
     variables: formData
     }
@@ -67,7 +55,8 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
-    redirect("/"); // Redirect to Login
+    navigate("/");
+    location.reload();
   };
 
   const handleEditProfileFormSubmit = (e: FormEvent) => {

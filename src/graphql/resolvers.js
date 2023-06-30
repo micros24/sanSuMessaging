@@ -53,7 +53,7 @@ module.exports = {
         return deleteFriendRequestProvider(sender, user);
     },
     editUserDetails: (_, newDetails, { user }) => {
-        return editUserDetailsProvider(UserModel, newDetails, user, pubSub);
+        return editUserDetailsProvider(UserModel, newDetails, user);
     }
   },
   Subscription: {

@@ -34,7 +34,7 @@ export default function Register() {
   // workaround route guard
   const user = useAuthState().user;
   if (user) {
-    return <Navigate to="messaging" />;
+    return <Navigate to="/messaging" />;
   }
 
   const navigate = useNavigate();
