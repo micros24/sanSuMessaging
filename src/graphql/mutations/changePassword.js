@@ -2,7 +2,7 @@ const { GraphQLError } = require("graphql");
 const bcrypt = require("bcryptjs");
 
 module.exports = async (UserModel, passwords, user) => {
-  let { oldPassword, newPassword, confirmPassword } = passwords;
+  const { oldPassword, newPassword, confirmPassword } = passwords;
   let errors = {};
 
   try {

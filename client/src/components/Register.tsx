@@ -24,11 +24,21 @@ const REGISTER_USER = gql`
       email
       firstName
       lastName
+      profilePicture
+    }
+  }
+`;
+
+const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!) {
+    uploadFile(file: $file) {
+      url
     }
   }
 `;
 
 export default function Register() {
+  let file;
   // workaround route guard
   const user = useAuthState().user;
   if (user) {
@@ -46,6 +56,8 @@ export default function Register() {
     profilePicture: "",
   });
 
+  const [uploadFile] = useMutation(UPLOAD_FILE);
+
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     update: (_, __) => navigate("/"), // Redirect to Login
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
@@ -55,15 +67,26 @@ export default function Register() {
   const handleSubmitRegisterForm = (e: FormEvent) => {
     e.preventDefault();
     registerUser();
+    //uploadFile({ variables: { file } });
+  };
+
+  const handleProfilePictureSelected = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!e.target.files) return;
+    const fileUpload = e.target.files[0];
+    file = fileUpload;
+    uploadFile({ variables: { file } });
   };
 
   return (
     <div className="d-flex justify-content-center">
       <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-trans">
-        <p className="text-center">
+        <span className="text-center">
           <h1>Registration</h1>
           Already have an account? <Link to="/">Login here!</Link>
-        </p>
+        </span>
+        <p></p>
         <Form onSubmit={handleSubmitRegisterForm}>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
             <Form.Label className={errors.email && "text-danger"}>
@@ -138,21 +161,15 @@ export default function Register() {
             />
           </Form.Group>
 
-          <Form.Group controlId="formFile" className="mb-3">
+          {/* <Form.Group controlId="formFile" className="mb-3">
             <Form.Label className={errors.profilePicture && "text-danger"}>
               {errors.profilePicture ?? "Profile Picture"}
             </Form.Label>
-            <Form.Control
-              type="file"
-              value={formData.profilePicture}
-              onChange={(e) =>
-                setFormData({ ...formData, profilePicture: e.target.value })
-              }
-            />
+            <Form.Control type="file" onChange={handleProfilePictureSelected} />
             <Form.Text className="text-muted">
               This field is optional.
             </Form.Text>
-          </Form.Group>
+          </Form.Group> */}
 
           <div className="text-center mb-3">
             <Button
@@ -164,6 +181,18 @@ export default function Register() {
               Register
             </Button>
           </div>
+        </Form>
+
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label className={errors.profilePicture && "text-danger"}>
+              {errors.profilePicture ?? "Profile Picture"}
+            </Form.Label>
+            <Form.Control type="file" onChange={handleProfilePictureSelected} />
+            <Form.Text className="text-muted">
+              This field is optional.
+            </Form.Text>
+          </Form.Group>
         </Form>
       </Row>
     </div>

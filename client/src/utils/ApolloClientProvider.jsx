@@ -1,10 +1,11 @@
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { setContext } from "@apollo/client/link/context";
-import { split, HttpLink } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 import {
+  split,
   ApolloClient,
   InMemoryCache,
   ApolloProvider as Provider,
@@ -23,13 +24,14 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const httpLink = new HttpLink({
+const httpLink = new createUploadLink({
   uri: "http://localhost:4000/graphql",
+  headers: { "Apollo-Require-Preflight": "true" },
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000/graphql",
+    url: "ws://localhost:4000/subscriptions",
     connectionParams: {
       Authorization: `${localStorage.getItem("token")}`,
     },

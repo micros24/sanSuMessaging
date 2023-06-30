@@ -12,6 +12,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
+import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
 
 const { sequelize } = pkg1;
 const typeDefs = typeDefsProvider; // The GraphQL schema
@@ -24,7 +25,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 // Creating the WebSocket server
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: "/graphql",
+  path: "/subscriptions",
 });
 
 // Hand in the schema we just created and have the
@@ -60,6 +61,8 @@ const server = new ApolloServer<MyContext>({
 });
 
 await server.start();
+app.use(express.static("public"));
+app.use(graphqlUploadExpress());
 app.use(
   "/graphql",
   cors<cors.CorsRequest>(),

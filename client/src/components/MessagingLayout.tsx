@@ -41,7 +41,7 @@ export default function MessagingLayout() {
   };
 
   return (
-    <div className="vh-100">
+    <div className="vh-100 overflow-hidden">
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
@@ -78,7 +78,7 @@ export default function MessagingLayout() {
             style={{
               position: "absolute",
               height: "85vh",
-              width: "81%",
+              width: "82.6%",
               marginTop: "2vh",
               marginLeft: "0.5%",
             }}
@@ -91,7 +91,7 @@ export default function MessagingLayout() {
               position: "absolute",
               bottom: "1%",
               width: "80%",
-              marginLeft: "1%",
+              marginLeft: "2%",
             }}
           >
             <ChatMessage onMessageSend={handleOnMessageSend} />

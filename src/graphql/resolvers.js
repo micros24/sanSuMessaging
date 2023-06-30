@@ -10,6 +10,7 @@ const getFriendsProvider = require("./queries/getFriends");
 const getFriendRequestsProvider = require("./queries/getFriendRequests");
 const editUserDetailsProvider = require("./mutations/editUserDetails");
 const changePasswordProvider = require("./mutations/changePassword");
+const uploadFileProvider = require("./mutations/fileUpload");
 
 const { UserModel } = require("../models");
 const { withFilter } = require("graphql-subscriptions");
@@ -59,6 +60,9 @@ module.exports = {
     changePassword: (_, passwords, { user }) => {
       return changePasswordProvider(UserModel, passwords, user);
     },
+    uploadFile: (_, { file }, { user }) => {
+      return uploadFileProvider(file, user);
+    },
   },
   Subscription: {
     newMessage: {
@@ -76,7 +80,6 @@ module.exports = {
           return false;
         }
       ),
-      //subscribe: () => pubSub.asyncIterator('NEW_MESSAGE')
     },
     newFriendRequest: {
       subscribe: withFilter(

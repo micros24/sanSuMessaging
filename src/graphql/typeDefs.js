@@ -1,4 +1,5 @@
 module.exports = `#graphql
+    scalar Upload
     type UserModel {
         email: String!
         firstName: String!
@@ -32,6 +33,9 @@ module.exports = `#graphql
         lastName: String!
         profilePicture: String
         match: Boolean!
+    }
+    type File {
+        url: String!
     }
     type Query {
         getUsers(name: String!): [FriendRequestSentChecker]!
@@ -76,6 +80,9 @@ module.exports = `#graphql
             newPassword: String!
             confirmPassword: String!
         ): UserModel!
+        uploadFile(
+            file: Upload!
+        ): File!
     }
     type Subscription {
         newMessage(
