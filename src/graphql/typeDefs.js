@@ -76,7 +76,7 @@ module.exports =
             oldPassword: String!
             newPassword: String!
             confirmPassword: String!
-        ): UserModel
+        ): UserModel!
     }
     type Subscription {
         newMessage(

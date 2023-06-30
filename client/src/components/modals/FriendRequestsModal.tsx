@@ -140,11 +140,9 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <div>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-          </div>
         </Modal.Footer>
       </Modal>
     </>

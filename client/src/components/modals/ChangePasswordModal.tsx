@@ -3,6 +3,14 @@ import { FormEvent, useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 
+const CHANGE_PASSWORD = gql`
+  mutation changePassword($oldPassword: String!, $newPassword: String!, $confirmPassword: String!) {
+    changePassword(oldPassword: $oldPassword, newPassword: $newPassword, confirmPassword: $confirmPassword) {
+      email firstName lastName
+    }
+  }
+`;
+
 export default function ChangePasswordModal() {
   const [show, setShow] = useState(false);
   const [toastText, setToastText] = useState("");
@@ -16,8 +24,19 @@ export default function ChangePasswordModal() {
     confirmPassword: ""
   });
 
+  const [changePassword] = useMutation(CHANGE_PASSWORD, {
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
+    onCompleted() {
+      notify();
+      handleClose();
+    },
+    variables: formData,
+  });
+
   const handleChangePasswordFormSubmit = (e: FormEvent) => {
-    // TODO: change password
+    e.preventDefault();
+    setToastText("Your password have been changed!");
+    changePassword();
   };
 
   return (
@@ -39,8 +58,9 @@ export default function ChangePasswordModal() {
           <Modal.Title>Change Password</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body className="text-center">
-            <Form onSubmit={handleChangePasswordFormSubmit}>
+        <Form onSubmit={handleChangePasswordFormSubmit}>
+          <Modal.Body className="text-center">
+
                 <Form.Group className="mb-3" controlId="formsCurrentPassword">
                   <Form.Label className={errors.oldPassword && "text-danger"}>
                     {errors.oldPassword ?? "Current Password"}
@@ -48,6 +68,7 @@ export default function ChangePasswordModal() {
                   <Form.Control
                     className={errors.oldPassword && "is-invalid"}
                     placeholder="Current password"
+                    type="password"
                     onChange={(e) => setFormData({ ...formData, oldPassword: e.target.value })}
                   />
                 </Form.Group>
@@ -59,6 +80,7 @@ export default function ChangePasswordModal() {
                   <Form.Control
                     className={errors.newPassword && "is-invalid"}
                     placeholder="New password"
+                    type="password"
                     onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
                   />
                 </Form.Group>
@@ -70,19 +92,21 @@ export default function ChangePasswordModal() {
                   <Form.Control
                     className={errors.confirmPassword && "is-invalid"}
                     placeholder="Confirm password"
+                    type="password"
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   />
                 </Form.Group>
-            </Form>
-        </Modal.Body>
+          </Modal.Body>
 
-        <Modal.Footer>
-          <div>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </div>
-        </Modal.Footer>
+          <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" type="submit">
+                Change password
+              </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );
