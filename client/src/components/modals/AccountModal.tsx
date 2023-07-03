@@ -9,10 +9,15 @@ import {
   Tooltip,
   Button,
   Modal,
+  Image,
   OverlayTrigger,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+const footerOverride = {
+  justifyContent: "space-between",
+};
 
 const EDIT_USER_DETAILS = gql`
   mutation editUserDetails(
@@ -34,11 +39,20 @@ const EDIT_USER_DETAILS = gql`
   }
 `;
 
+const UPDATE_PROFILE_PICTURE = gql`
+  mutation uploadFile($file: Upload!) {
+    uploadFile(file: $file) {
+      url
+    }
+  }
+`;
+
 interface Props {
   showAddAFriendButton?: boolean;
 }
 
 export default function AccountModal({ showAddAFriendButton }: Props) {
+  let file;
   const [show, setShow] = useState(false);
   const [toastText] = useState("Account details have been updated!");
   const notify = () => toast(toastText);
@@ -84,26 +98,45 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     changePasswordModal?.click();
   };
 
-  const handleChangeProfilePicture = () => {
-    let fileUpload = document.getElementById("accountModalProfilePictureEdit");
-    fileUpload?.click();
+  const [updateProfilePicture] = useMutation(UPDATE_PROFILE_PICTURE, {
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
+    onCompleted: (data) => {
+      setFormData({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePicture: data.uploadFile.url,
+      });
+      user.profilePicture = data.uploadFile.url;
+    },
+  });
+
+  const handleChangeProfilePicture = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!e.target.files) return;
+    const fileUpload = e.target.files[0];
+    file = fileUpload;
+    await updateProfilePicture({ variables: { file } });
   };
 
-  const footerOverride = {
-    justifyContent: "space-between",
+  const handleBtnClickEditProfilePicture = () => {
+    let fileUploadInput = document.getElementById(
+      "accountModalProfilePictureEdit"
+    );
+    fileUploadInput?.click();
   };
 
-  // TODO: profile picture editing
   return (
     <>
-      <Form.Control
-        id="accountModalProfilePictureEdit"
-        type="file"
-        hidden
-        onChange={(e) =>
-          setFormData({ ...formData, profilePicture: e.target.value })
-        }
-      />
+      <Form>
+        <Form.Control
+          id="accountModalProfilePictureEdit"
+          type="file"
+          hidden
+          onChange={handleChangeProfilePicture}
+        />
+      </Form>
       <Button
         id="btnShowAccountModal"
         variant="primary"
@@ -125,13 +158,22 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>
-            <Link to="#">
+            {user.profilePicture ? (
+              <Link to={user.profilePicture} target="_blank">
+                <Image
+                  src={user.profilePicture}
+                  height={200}
+                  width={200}
+                  roundedCircle
+                />
+              </Link>
+            ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="150"
-                height="150"
+                width="200"
+                height="200"
                 fill="currentColor"
-                className="bi bi-person-circle"
+                className="bi bi-person-circle text-primary"
                 viewBox="0 0 16 16"
               >
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -140,9 +182,9 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                 />
               </svg>
-            </Link>
+            )}
           </p>
-          <Button variant="primary" onClick={handleChangeProfilePicture}>
+          <Button variant="primary" onClick={handleBtnClickEditProfilePicture}>
             Edit profile picture
           </Button>{" "}
           <Button variant="warning" onClick={handleChangePassword}>

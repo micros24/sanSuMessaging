@@ -10,6 +10,7 @@ const LOGIN_USER = gql`
       email
       firstName
       lastName
+      profilePicture
       token
     }
   }
