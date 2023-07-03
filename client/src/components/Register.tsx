@@ -74,13 +74,21 @@ export default function Register() {
     registerUser();
   };
 
-  const handleProfilePictureSelected = (
+  const handleProfilePictureSelected = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!e.target.files) return;
     const fileUpload = e.target.files[0];
     file = fileUpload;
-    uploadFile({ variables: { file } });
+    var fileName = file.name;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+      await uploadFile({ variables: { file } });
+    } else {
+      e.currentTarget.value = "";
+      alert("Only jpg/jpeg, png, and gif files are allowed!");
+    }
   };
 
   return (
@@ -165,11 +173,15 @@ export default function Register() {
             />
           </Form.Group>
 
-          <Form.Group controlId="formFile" className="mb-3">
+          <Form.Group controlId="fileUploadProfilePicture" className="mb-3">
             <Form.Label className={errors.profilePicture && "text-danger"}>
               {errors.profilePicture ?? "Profile Picture"}
             </Form.Label>
-            <Form.Control type="file" onChange={handleProfilePictureSelected} />
+            <Form.Control
+              type="file"
+              accept="image/png, image/gif, image/jpeg"
+              onChange={handleProfilePictureSelected}
+            />
             <Form.Text className="text-muted">
               This field is optional.
             </Form.Text>

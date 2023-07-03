@@ -117,7 +117,15 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     if (!e.target.files) return;
     const fileUpload = e.target.files[0];
     file = fileUpload;
-    await updateProfilePicture({ variables: { file } });
+    var fileName = file.name;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+      await updateProfilePicture({ variables: { file } });
+    } else {
+      e.currentTarget.value = "";
+      alert("Only jpg/jpeg, png, and gif files are allowed!");
+    }
   };
 
   const handleBtnClickEditProfilePicture = () => {
@@ -133,6 +141,7 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
         <Form.Control
           id="accountModalProfilePictureEdit"
           type="file"
+          accept="image/png, image/gif, image/jpeg"
           hidden
           onChange={handleChangeProfilePicture}
         />
