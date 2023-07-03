@@ -1,6 +1,6 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { FormEvent, useState } from "react";
-import { Button, Modal, Form, ListGroup } from "react-bootstrap";
+import { Button, Modal, Form, ListGroup, Image } from "react-bootstrap";
 import { FriendRequestModel } from "../../../../src/models";
 import { toast } from "react-toastify";
 
@@ -48,18 +48,20 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
   });
 
   const [addFriend] = useMutation(ADD_FRIEND, {
-    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
-    variables: data
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    variables: data,
   });
 
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
-    onError: (error) => alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
-    variables: data
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    variables: data,
   });
 
   const { refetch } = useQuery(FRIEND_REQUESTS, {
     onCompleted(data) {
-      setUsers(data.getFriendRequests)
+      setUsers(data.getFriendRequests);
     },
   });
   if (isNewLogin === true) {
@@ -87,22 +89,44 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
 
   return (
     <>
-      <Button
-        id="btnShowFriendRequestsModal"
-        onClick={handleShow}
-        hidden
-      />
+      <Button id="btnShowFriendRequestsModal" onClick={handleShow} hidden />
       <Modal size="lg" show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Friend Requests</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center">
           <ListGroup variant="flush">
-            {users[0] ? 
-              (users.map((friendRequest: FriendRequestModel) => (
-                <ListGroup.Item id={friendRequest.sender} key={friendRequest.sender}>
+            {users[0] ? (
+              users.map((friendRequest: FriendRequestModel) => (
+                <ListGroup.Item
+                  id={friendRequest.sender}
+                  key={friendRequest.sender}
+                >
                   <div className="d-flex justify-content-between align-items-center">
-                    {friendRequest.senderProfilePicture} {friendRequest.senderFirstName}{" "}
+                    {friendRequest.senderProfilePicture ? (
+                      <Image
+                        src={friendRequest.senderProfilePicture}
+                        roundedCircle
+                        height={50}
+                        width={50}
+                      />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="30"
+                        height="30"
+                        fill="currentColor"
+                        className="bi bi-person-circle text-primary"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                        />
+                      </svg>
+                    )}
+                    {friendRequest.senderFirstName}{" "}
                     {friendRequest.senderLastName} ({friendRequest.sender})
                     <Form onSubmit={handleDeleteFriendRequest}>
                       <Button
@@ -140,9 +164,9 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

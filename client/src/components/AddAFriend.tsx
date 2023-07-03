@@ -3,7 +3,7 @@ import { useAuthState } from "../context/auth";
 import { FormEvent, useState } from "react";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import SideBarTop from "./SideBarTop";
-import { ListGroup, Button, Form, Row } from "react-bootstrap";
+import { ListGroup, Button, Form, Row, Image } from "react-bootstrap";
 import AccountModal from "./modals/AccountModal";
 import { FriendRequestSentCheckerModel } from "../../../src/models";
 
@@ -131,8 +131,30 @@ export default function AddAFriend() {
                 users.map((person: FriendRequestSentCheckerModel) => (
                   <ListGroup.Item key={person.email}>
                     <div className="d-flex justify-content-between align-items-center">
-                      {person.profilePicture} {person.firstName}{" "}
-                      {person.lastName} ({person.email})
+                      {person.profilePicture ? (
+                        <Image
+                          src={person.profilePicture}
+                          roundedCircle
+                          height={50}
+                          width={50}
+                        />
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30"
+                          height="30"
+                          fill="currentColor"
+                          className="bi bi-person-circle text-primary"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                          />
+                        </svg>
+                      )}{" "}
+                      {person.firstName} {person.lastName} ({person.email})
                       {person.match === true ? (
                         <Button
                           variant="success"
