@@ -56,18 +56,22 @@ export default function Register() {
     profilePicture: "",
   });
 
-  const [uploadFile] = useMutation(UPLOAD_FILE);
+  const [uploadFile] = useMutation(UPLOAD_FILE, {
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
+    onCompleted: (data) => {
+      setFormData({ ...formData, profilePicture: data.uploadFile.url });
+    },
+  });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update: (_, __) => navigate("/"), // Redirect to Login
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
+    update: (_, __) => navigate("/"), // Redirect to Login
     variables: formData,
   });
 
   const handleSubmitRegisterForm = (e: FormEvent) => {
     e.preventDefault();
     registerUser();
-    //uploadFile({ variables: { file } });
   };
 
   const handleProfilePictureSelected = (
@@ -161,7 +165,7 @@ export default function Register() {
             />
           </Form.Group>
 
-          {/* <Form.Group controlId="formFile" className="mb-3">
+          <Form.Group controlId="formFile" className="mb-3">
             <Form.Label className={errors.profilePicture && "text-danger"}>
               {errors.profilePicture ?? "Profile Picture"}
             </Form.Label>
@@ -169,7 +173,7 @@ export default function Register() {
             <Form.Text className="text-muted">
               This field is optional.
             </Form.Text>
-          </Form.Group> */}
+          </Form.Group>
 
           <div className="text-center mb-3">
             <Button
@@ -181,18 +185,6 @@ export default function Register() {
               Register
             </Button>
           </div>
-        </Form>
-
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label className={errors.profilePicture && "text-danger"}>
-              {errors.profilePicture ?? "Profile Picture"}
-            </Form.Label>
-            <Form.Control type="file" onChange={handleProfilePictureSelected} />
-            <Form.Text className="text-muted">
-              This field is optional.
-            </Form.Text>
-          </Form.Group>
         </Form>
       </Row>
     </div>
