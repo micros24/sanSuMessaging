@@ -60,27 +60,27 @@ export default function MessagingLayout() {
       />
       <Row>
         <Col className="col-2">
-          <Row className="mt-3">
+          <Row className="mt-2">
             <SideBarTop onAccountClick={handleAccountClick} />
           </Row>
           <Row
             className="overflow-auto col-2 mx-0"
-            style={{ position: "absolute", height: "91vh", marginTop: "2vh" }}
+            style={{ position: "absolute", height: "91.5vh", marginTop: "2vh" }}
           >
             <SideBar onFriendClick={handleFriendClick} />
           </Row>
         </Col>
-        <Col className="col-10 mt-3">
+        <Col className="col-10 mt-2 p-0">
           <Row>
             <ChatWindowTop />
           </Row>
           <Row
             style={{
               position: "absolute",
-              height: "85vh",
-              width: "82.6%",
-              marginTop: "2vh",
-              marginLeft: "0.5%",
+              height: "86vh",
+              width: "83.2%",
+              marginTop: "10px",
+              marginLeft: "10px",
             }}
             className="bg-white bg-trans overflow-auto"
           >
@@ -89,9 +89,9 @@ export default function MessagingLayout() {
           <Row
             style={{
               position: "absolute",
-              bottom: "1%",
+              bottom: "8px",
               width: "80%",
-              marginLeft: "2%",
+              marginLeft: "3%",
             }}
           >
             <ChatMessage onMessageSend={handleOnMessageSend} />

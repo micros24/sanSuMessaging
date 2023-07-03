@@ -66,9 +66,9 @@ export default function FriendRequests({
   return (
     <Button
       variant="link"
-      className="text-white d-flex justify-content-center align-items-center bg-transparent link-underline link-underline-opacity-0"
+      className="text-white d-flex justify-content-center align-items-center bg-transparent link-underline link-underline-opacity-0 mt-2"
       onClick={onFriendRequestsClick}
-      style={{ position: "absolute", right: "0", margin: "0.5%" }}
+      style={{ position: "absolute", right: "0" }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -2,7 +2,8 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useAuthState } from "../context/auth";
 import { useState } from "react";
 import { UserModel } from "../../../src/models";
-import { Image } from "react-bootstrap";
+import { ListGroup, Image } from "react-bootstrap";
+import { useMessagingDispatch } from "../context/messaging";
 
 const GET_FRIENDS_QUERY = gql`
   query getFriends {
@@ -31,15 +32,19 @@ interface Props {
 }
 
 export default function SideBar({ onFriendClick }: Props) {
+  const dispatch = useMessagingDispatch();
   const user = useAuthState().user;
   const [friends, setFriends] = useState<UserModel[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const {} = useQuery(GET_FRIENDS_QUERY, {
     onError: (error) =>
       alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
       setFriends(data.getFriends);
+      if (data.getFriends[0]) {
+        dispatch({ type: "SET", payload: data.getFriends[0] });
+      }
     },
   });
 
@@ -57,21 +62,18 @@ export default function SideBar({ onFriendClick }: Props) {
   });
 
   return (
-    <div className="list-group list-group-flush text-center">
+    <ListGroup>
       {friends[0] ? (
         friends.map((person: UserModel, index) => (
-          <a
-            className={
-              selectedIndex === index
-                ? "list-group-item list-group-item-action active"
-                : "list-group-item list-group-item-action"
-            }
+          <ListGroup.Item
+            action
+            variant="light"
+            key={person.email}
+            active={selectedIndex === index}
             onClick={() => {
               setSelectedIndex(index);
               onFriendClick;
             }}
-            key={person.email}
-            href="#"
           >
             {person.profilePicture ? (
               <Image
@@ -86,7 +88,7 @@ export default function SideBar({ onFriendClick }: Props) {
                 width="30"
                 height="30"
                 fill="currentColor"
-                className="bi bi-person-circle text-primary"
+                className="bi bi-person-circle text-success"
                 viewBox="0 0 16 16"
               >
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -97,11 +99,11 @@ export default function SideBar({ onFriendClick }: Props) {
               </svg>
             )}{" "}
             {person.firstName} {person.lastName}
-          </a>
+          </ListGroup.Item>
         ))
       ) : (
         <p className="secondary text-white">Start adding friends!</p>
       )}
-    </div>
+    </ListGroup>
   );
 }
