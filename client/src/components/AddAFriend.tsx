@@ -155,7 +155,7 @@ export default function AddAFriend() {
                         </svg>
                       )}{" "}
                       {person.firstName} {person.lastName} ({person.email})
-                      {person.match === true ? (
+                      {person.match === "recipient" ? (
                         <Button
                           variant="success"
                           type="button"
@@ -163,22 +163,16 @@ export default function AddAFriend() {
                         >
                           Request sent!
                         </Button>
-                      ) : (
+                      ) : person.match === "sender" ? (
                         <Button
-                          variant="primary"
-                          type="submit"
-                          onClick={(e) => {
-                            setFormData({ recipient: person.email });
-                            e.currentTarget.classList.add("disabled");
-                            e.currentTarget.classList.replace(
-                              "btn-primary",
-                              "btn-success"
-                            );
-                            e.currentTarget.innerText = "Request sent!";
-                          }}
+                          variant="success"
+                          type="button"
+                          className="disabled"
                         >
-                          Send request
+                          They have sent you a friend request!
                         </Button>
+                      ) : (
+                        ""
                       )}
                     </div>
                   </ListGroup.Item>

@@ -26,7 +26,7 @@
   "scripts": {
     "compile": "tsc",
     "start-node": "npx nodemon ./src/index.js --ignore client/",
-    "start": "npm run compile && npx nodemon ./src/index.js --ignore client/ & cd ./client && npm run dev"
+    "start": "npm run compile && npm run start-node & cd ./client && npm run dev"
   },
   "name": "sansumessaging",
   "version": "1.0.0",

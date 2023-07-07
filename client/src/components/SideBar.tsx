@@ -102,7 +102,7 @@ export default function SideBar({ onFriendClick }: Props) {
           </ListGroup.Item>
         ))
       ) : (
-        <p className="secondary text-white">Start adding friends!</p>
+        <p className="secondary text-white text-center"><h2>Start adding friends!</h2></p>
       )}
     </ListGroup>
   );

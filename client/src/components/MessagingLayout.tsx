@@ -77,12 +77,12 @@ export default function MessagingLayout() {
           <Row
             style={{
               position: "absolute",
-              height: "86vh",
+              height: "86.5vh",
               width: "83.2%",
-              marginTop: "10px",
+              marginTop: "15px",
               marginLeft: "10px",
             }}
-            className="bg-white bg-trans overflow-auto"
+            className="bg-white bg-messages overflow-auto"
           >
             <ChatWindow />
           </Row>

@@ -1,6 +1,7 @@
 const { GraphQLError } = require("graphql");
 const { Op } = require("sequelize");
 const getSentFriendRequests = require("./getSentFriendRequests");
+const getFriendRequests = require("./getFriendRequests");
 const getFriends = require("./getFriends");
 const validateEmail = (email) => {
   return String(email)
@@ -84,6 +85,8 @@ module.exports = async (UserModel, name, user) => {
 
     // Get all friend requests I have sent
     const sentFriendRequests = await getSentFriendRequests(user);
+    // Get all friend requests to me
+    let friendRequests = await getFriendRequests(user);
     let friendRequestSentChecker = [];
     let match;
 
@@ -101,18 +104,28 @@ module.exports = async (UserModel, name, user) => {
     // sentFriendRequests = all friend requests that I have sent
     users.forEach((person) => {
       if (sentFriendRequests[0]) {
-        sentFriendRequests.forEach((friendRequest) => {
-          if (person.email === friendRequest.recipient) {
-            match = true;
+        sentFriendRequests.forEach((sentFriendRequest) => {
+          if (person.email === sentFriendRequest.recipient) {
+            match = "recipient";
             pushIntoFriendRequestSentChecker(person, match);
           } else {
-            match = false;
+            match = "false";
             pushIntoFriendRequestSentChecker(person, match);
           }
         });
       } else {
-        match = false;
+        match = "false";
         pushIntoFriendRequestSentChecker(person, match);
+      }
+    });
+
+    friendRequestSentChecker.forEach((person) => {
+      if (friendRequests[0]) {
+        friendRequests.forEach((friendRequest) => {
+          if (person.email === friendRequest.sender) {
+            person.match = "sender";
+          }
+        });
       }
     });
 

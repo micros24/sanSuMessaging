@@ -3,7 +3,6 @@ import { Image } from "react-bootstrap";
 
 export default function ChatWindowTop() {
   const recipient = useMessagingState().recipient;
-  console.log(recipient);
 
   return (
     <>

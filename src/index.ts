@@ -22,14 +22,12 @@ const app = express();
 const httpServer = createServer(app);
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-// Creating the WebSocket server
 const wsServer = new WebSocketServer({
   server: httpServer,
   path: "/subscriptions",
 });
 
-// Hand in the schema we just created and have the
-// WebSocketServer start listening.
+// WebSocketServer start listening
 const serverCleanup = useServer(
   {
     schema,

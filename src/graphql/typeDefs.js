@@ -32,7 +32,7 @@ module.exports = `#graphql
         firstName: String!
         lastName: String!
         profilePicture: String
-        match: Boolean!
+        match: String!
     }
     type File {
         url: String!
