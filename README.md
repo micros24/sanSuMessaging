@@ -10,7 +10,8 @@ This application was developed using MariaDB cli.
 
 Please replace all _italicized_ to your preference and make sure it is consistent throughout the project.
 
-Install MariaDB depending on your operating system
+- Install MariaDB depending on your operating system
+- Install node and npm depending on your operating system
 
 ### Setup config files in config folder
 
@@ -27,7 +28,7 @@ Initialize MariaDB
 
 Start MariaDB service
 
-> sudo systemctl start service mariadb.service
+> sudo systemctl start mariadb.service
 
 Enter mariaMariaDB as admin
 
@@ -41,9 +42,15 @@ Create a user at 'localhost'
 
 > MariaDB [(none)]> CREATE USER '_USER_'@'localhost' IDENTIFIED BY '_PASSWORD_';
 
-Grant all privileges to sanSuDB database to _USER_
+Grant all privileges to sanSuDB database to _USER_ then exit mariadb console
 
 > MariaDB [(none)]> GRANT ALL PRIVILEGES ON sanSuDB.\* TO '_USER_'@'localhost';
+
+> MariaDB [(none)]> exit
+
+Change directory into src
+
+> cd src
 
 Initialize database
 
