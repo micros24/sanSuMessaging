@@ -1,13 +1,35 @@
+import { useMessagingState } from "../context/messaging";
+import { FormEvent } from "react";
 import { useState } from "react";
 import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { gql, useMutation } from "@apollo/client";
+
+const SEND_MESSAGE = gql`
+  mutation sendMessage($to: String!, $content: String!) {
+    sendMessage(to: $to, content: $content) {
+      to
+      content
+    }
+  }
+`;
 
 export default function ChatMessage() {
-  const handleOnMessageSend = (e) => {};
+  const currentlyMessaging = useMessagingState().recipient;
   const [formData, setFormData] = useState({
-    from: "",
     to: "",
-    message: "",
+    content: "",
   });
+
+  const [sendMessage] = useMutation(SEND_MESSAGE, {
+    onError: (error) => alert(error.graphQLErrors[0].extensions.code),
+    variables: formData,
+  });
+
+  const handleOnMessageSend = (e: FormEvent) => {
+    e.preventDefault();
+    setFormData({ ...formData, to: currentlyMessaging.email });
+    sendMessage();
+  };
 
   return (
     <>
@@ -17,7 +39,7 @@ export default function ChatMessage() {
             <InputGroup className="mb-3">
               <Form.Control
                 placeholder="Aa"
-                value={formData.message}
+                value={formData.content}
                 aria-label="Aa"
                 aria-describedby="messageSendInput"
                 onKeyDown={(event) => {
@@ -26,7 +48,7 @@ export default function ChatMessage() {
                   }
                 }}
                 onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
+                  setFormData({ ...formData, content: e.target.value })
                 }
               />
               <Button
