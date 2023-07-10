@@ -46,14 +46,15 @@ export default function AddAFriend() {
   });
 
   const [getUsers, { loading }] = useLazyQuery(GET_USERS_QUERY, {
-    onError: (error) => setErrors(error.graphQLErrors[0].extensions.code),
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions),
     onCompleted(data) {
       setUsers(data.getUsers);
+      setErrors({});
     },
   });
 
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
-    onError: (error) => setErrors(error.graphQLErrors[0].extensions.code),
+    onError: (error) => setErrors(error.graphQLErrors[0].extensions),
     variables: formData,
   });
 

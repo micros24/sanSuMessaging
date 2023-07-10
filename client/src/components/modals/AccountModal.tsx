@@ -66,14 +66,16 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
     email: "",
     firstName: "",
     lastName: "",
-    profilePicture: "",
+    profilePicture: user.profilePicture,
   });
 
   const [editUserDetails, { loading }] = useMutation(EDIT_USER_DETAILS, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
+      setErrors({});
       // refresh token on accout details edit
       dispatch({ type: "LOGIN", payload: data.editUserDetails });
+      notify();
     },
     variables: formData,
   });
@@ -87,7 +89,6 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
   const handleEditProfileFormSubmit = (e: FormEvent) => {
     e.preventDefault();
     editUserDetails();
-    notify();
   };
 
   const handleChangePassword = () => {
@@ -254,10 +255,10 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
                     {errors.lastName ?? "Last Name"}
                   </Form.Label>
                   <Form.Control
-                    className={errors.email && "is-invalid"}
+                    className={errors.lastName && "is-invalid"}
                     type="text"
-                    defaultValue={user.lastName}
                     placeholder="Last name"
+                    defaultValue={user.lastName}
                     disabled={loading}
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
