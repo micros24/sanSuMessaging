@@ -2,7 +2,7 @@ import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useMessagingState } from "../context/messaging";
 import { MessageModel } from "../../../src/models";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Badge } from "react-bootstrap";
 
 const GET_MESSAGES = gql`
   query getMessages($from: String!) {
@@ -38,29 +38,31 @@ export default function ChatHistory() {
 
   return (
     <div>
-      <Row>
-        <Col>
-          <p>
-            {messages.length !== 0
-              ? messages.map((message) => (
-                  <p>
-                    {message.from === currentlyMessaging.email ? (
-                      // My messages
-                      <div className="d-flex justify-content-start">
-                        {message.content}
-                      </div>
-                    ) : (
-                      // Their messages
-                      <div className="d-flex justify-content-end">
-                        {message.content}
-                      </div>
-                    )}
-                  </p>
-                ))
-              : "You are now connected! Send your first message!"}
-          </p>
-        </Col>
-      </Row>
+      {messages.length !== 0 ? (
+        messages.map((message) => (
+          <div key={message.uuid}>
+            {message.from === currentlyMessaging.email ? (
+              // Their messages
+              <div className="d-flex justify-content-start text-center p-1">
+                <Badge pill bg="light" className="px-3 py-2 text-black">
+                  {message.content}
+                </Badge>
+              </div>
+            ) : (
+              // My messages
+              <div className="d-flex justify-content-end text-center p-1">
+                <Badge pill bg="success" className="px-3 py-2">
+                  {message.content}
+                </Badge>
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <h4 className="text-center">
+          "You are now connected! Send your first message!"
+        </h4>
+      )}
     </div>
   );
 }
