@@ -3,7 +3,7 @@ const MessagingStateContext = createContext();
 const MessagingDispatchContext = createContext();
 let recipient;
 
-const authReducer = (state, action) => {
+const msgReducer = (state, action) => {
   switch (action.type) {
     case "SET":
       return {
@@ -18,7 +18,7 @@ const authReducer = (state, action) => {
 };
 
 export const MessagingProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, { recipient });
+  const [state, dispatch] = useReducer(msgReducer, { recipient });
 
   return (
     <MessagingDispatchContext.Provider value={dispatch}>

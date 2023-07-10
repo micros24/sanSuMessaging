@@ -17,6 +17,7 @@ module.exports = async (UserModel, from, user) => {
         to: { [Op.in]: emails },
       },
       order: [["createdAt", "DESC"]],
+      limit: 50,
     });
 
     return messages;

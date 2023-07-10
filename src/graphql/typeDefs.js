@@ -86,6 +86,7 @@ module.exports = `#graphql
     }
     type Subscription {
         newMessage(
+            from: String!
             recipient: String!
         ): MessageModel!
         newFriendRequest(

@@ -67,14 +67,19 @@ module.exports = {
   Subscription: {
     newMessage: {
       subscribe: withFilter(
-        //first parameter
+        // first parameter
         (_, __, { user }) => {
           if (!user) throw new GraphQlError("Unauthenticated");
           return pubSub.asyncIterator("NEW_MESSAGE");
         },
-        //second parameter
-        ({ newMessage }, { recipient }) => {
-          if (newMessage.to === recipient) {
+        // second parameter
+        // newMessage is from API response
+        // recipient is parameter for API request
+        ({ newMessage }, { recipient, from }) => {
+          if (
+            (newMessage.to === recipient && newMessage.from === from) ||
+            (newMessage.to === from && newMessage.from === recipient)
+          ) {
             return true;
           }
           return false;
@@ -105,7 +110,7 @@ module.exports = {
           return pubSub.asyncIterator("NEW_FRIEND");
         },
         //second parameter
-        ({ newFriend, loggedInUser }, { recipient }) => {
+        ({ _, loggedInUser }, { recipient }) => {
           if (loggedInUser === recipient) {
             return true;
           }

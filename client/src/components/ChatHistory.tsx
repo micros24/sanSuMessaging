@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useState, useRef, useEffect } from "react";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useMessagingState } from "../context/messaging";
+import { useAuthState } from "../context/auth";
 import { MessageModel } from "../../../src/models";
-import { Row, Col, Badge } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 
 const GET_MESSAGES = gql`
   query getMessages($from: String!) {
@@ -16,20 +17,53 @@ const GET_MESSAGES = gql`
   }
 `;
 
-export default function ChatHistory() {
-  const currentlyMessaging = useMessagingState().recipient;
-  const [messages, setMessages] = useState<MessageModel[]>([]);
+const NEW_MESSAGES_SUBSCRIPTION = gql`
+  subscription newMessage($recipient: String!, $from: String!) {
+    newMessage(recipient: $recipient, from: $from) {
+      uuid
+      to
+      from
+      content
+      createdAt
+    }
+  }
+`;
 
+export default function ChatHistory() {
+  const user = useAuthState().user;
+  const currentlyMessaging = useMessagingState().recipient;
+  const divRef = useRef<HTMLDivElement>(null);
+  const [messageHistory, setMessageHistory] = useState<MessageModel[]>([]);
   let from;
   if (currentlyMessaging) {
+    console.log(currentlyMessaging);
     from = currentlyMessaging.email;
   } else {
-    from = "";
+    from = undefined;
   }
+
+  useEffect(() => {
+    if (divRef.current != null) divRef.current.scrollIntoView();
+  });
+
+  const {} = useSubscription(NEW_MESSAGES_SUBSCRIPTION, {
+    onError: (error) =>
+      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onData(data) {
+      let newMessage = data.data.data.newMessage;
+      let temp = [...messageHistory, newMessage];
+      setMessageHistory(temp);
+    },
+    variables: {
+      from: from,
+      recipient: user.email,
+    },
+  });
 
   const {} = useQuery(GET_MESSAGES, {
     onCompleted(data) {
-      setMessages(data.getMessages);
+      var myArray = Array.from(data.getMessages).reverse();
+      setMessageHistory(myArray);
     },
     variables: {
       from: from,
@@ -38,20 +72,25 @@ export default function ChatHistory() {
 
   return (
     <div>
-      {messages.length !== 0 ? (
-        messages.map((message) => (
-          <div key={message.uuid}>
+      {messageHistory.length !== 0 ? (
+        messageHistory.map((message) => (
+          <div key={message.uuid} style={{ fontSize: "24px" }}>
             {message.from === currentlyMessaging.email ? (
               // Their messages
               <div className="d-flex justify-content-start text-center p-1">
-                <Badge pill bg="light" className="px-3 py-2 text-black">
+                <Badge
+                  pill
+                  bg="light"
+                  className="px-3 py-2 fw-normal"
+                  text="dark"
+                >
                   {message.content}
                 </Badge>
               </div>
             ) : (
               // My messages
               <div className="d-flex justify-content-end text-center p-1">
-                <Badge pill bg="success" className="px-3 py-2">
+                <Badge pill bg="success" className="px-3 py-2 fw-normal">
                   {message.content}
                 </Badge>
               </div>
@@ -63,6 +102,7 @@ export default function ChatHistory() {
           "You are now connected! Send your first message!"
         </h4>
       )}
+      <div ref={divRef} />
     </div>
   );
 }

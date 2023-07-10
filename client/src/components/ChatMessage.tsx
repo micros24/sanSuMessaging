@@ -21,13 +21,12 @@ export default function ChatMessage() {
   });
 
   const [sendMessage] = useMutation(SEND_MESSAGE, {
-    onError: (error) => alert(error.graphQLErrors[0].extensions.code),
     variables: formData,
   });
 
   const handleOnMessageSend = (e: FormEvent) => {
     e.preventDefault();
-    setFormData({ ...formData, to: currentlyMessaging.email });
+    (document.getElementById("inputMessage") as HTMLInputElement).value = "";
     sendMessage();
   };
 
@@ -38,8 +37,8 @@ export default function ChatMessage() {
           <Form onSubmit={handleOnMessageSend}>
             <InputGroup className="mb-3">
               <Form.Control
+                id="inputMessage"
                 placeholder="Aa"
-                value={formData.content}
                 aria-label="Aa"
                 aria-describedby="messageSendInput"
                 onKeyDown={(event) => {
@@ -53,8 +52,11 @@ export default function ChatMessage() {
               />
               <Button
                 variant="success text-white"
+                type="submit"
                 id="btnMessageSendInput"
-                onClick={handleOnMessageSend}
+                onClick={() =>
+                  setFormData({ ...formData, to: currentlyMessaging.email })
+                }
               >
                 Send
               </Button>
