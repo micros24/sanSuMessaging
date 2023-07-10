@@ -127,7 +127,7 @@ export default function AddAFriend() {
         <Form onSubmit={handleSendFriendRequest}>
           <Row className="p-3 bg-white text-dark bg-trans">
             <ListGroup>
-              {users[0] ? (
+              {users.length !== 0 ? (
                 users.map((person: FriendRequestSentCheckerModel) => (
                   <ListGroup.Item key={person.email}>
                     <div className="d-flex justify-content-between align-items-center">

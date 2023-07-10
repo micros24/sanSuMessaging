@@ -103,7 +103,7 @@ module.exports = async (UserModel, name, user) => {
     // filtered to remove my friends
     // sentFriendRequests = all friend requests that I have sent
     users.forEach((person) => {
-      if (sentFriendRequests[0]) {
+      if (sentFriendRequests.length !== 0) {
         sentFriendRequests.forEach((sentFriendRequest) => {
           if (person.email === sentFriendRequest.recipient) {
             match = "recipient";
@@ -120,7 +120,7 @@ module.exports = async (UserModel, name, user) => {
     });
 
     friendRequestSentChecker.forEach((person) => {
-      if (friendRequests[0]) {
+      if (friendRequests.legnth !== 0) {
         friendRequests.forEach((friendRequest) => {
           if (person.email === friendRequest.sender) {
             person.match = "sender";

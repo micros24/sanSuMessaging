@@ -96,7 +96,7 @@ export default function FriendRequestsModal({ isNewLogin }: Props) {
         </Modal.Header>
         <Modal.Body className="text-center">
           <ListGroup variant="flush">
-            {users[0] ? (
+            {users.length !== 0 ? (
               users.map((friendRequest: FriendRequestModel) => (
                 <ListGroup.Item
                   id={friendRequest.sender}

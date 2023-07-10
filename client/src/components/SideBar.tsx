@@ -27,15 +27,11 @@ const GET_FRIENDS_SUBSCRIPTION = gql`
   }
 `;
 
-interface Props {
-  onFriendClick: () => void;
-}
-
-export default function SideBar({ onFriendClick }: Props) {
-  const dispatch = useMessagingDispatch();
+export default function SideBar() {
+  const messagingDispatch = useMessagingDispatch();
   const user = useAuthState().user;
   const [friends, setFriends] = useState<UserModel[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const {} = useQuery(GET_FRIENDS_QUERY, {
     onError: (error) =>
@@ -43,7 +39,8 @@ export default function SideBar({ onFriendClick }: Props) {
     onCompleted(data) {
       setFriends(data.getFriends);
       if (data.getFriends[0]) {
-        dispatch({ type: "SET", payload: data.getFriends[0] });
+        messagingDispatch({ type: "SET", payload: data.getFriends[0] });
+        setSelectedIndex(0);
       }
     },
   });
@@ -61,18 +58,23 @@ export default function SideBar({ onFriendClick }: Props) {
     },
   });
 
+  const handleOnFriendClick = (person: UserModel) => {
+    messagingDispatch({ type: "SET", payload: person });
+  };
+
   return (
     <ListGroup>
-      {friends[0] ? (
+      {friends.length !== 0 ? (
         friends.map((person: UserModel, index) => (
           <ListGroup.Item
             action
             variant="light"
+            id={person.email}
             key={person.email}
             active={selectedIndex === index}
             onClick={() => {
               setSelectedIndex(index);
-              onFriendClick;
+              handleOnFriendClick(person);
             }}
           >
             {person.profilePicture ? (
@@ -102,7 +104,7 @@ export default function SideBar({ onFriendClick }: Props) {
           </ListGroup.Item>
         ))
       ) : (
-        <p className="secondary text-white text-center"><h2>Start adding friends!</h2></p>
+        <h2 className="text-white text-center">Start adding friends!</h2>
       )}
     </ListGroup>
   );

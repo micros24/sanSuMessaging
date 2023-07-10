@@ -23,7 +23,7 @@ export default function Login() {
     return <Navigate to="/messaging" />;
   }
 
-  const dispatch = useAuthDispatch();
+  const authDispatch = useAuthDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(Object);
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ export default function Login() {
   const [getUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
-      dispatch({ type: "LOGIN", payload: data.login });
+      authDispatch({ type: "LOGIN", payload: data.login });
       navigate("/messaging");
     },
   });

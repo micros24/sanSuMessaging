@@ -35,7 +35,9 @@ export default function ChatWindowTop() {
             {recipient.firstName} {recipient.lastName}
           </h4>
         ) : (
-          <span className="text-white">Add a friend to start chatting!</span>
+          <span className="text-white">
+            <h4>Click on a friend to start chatting!</h4>
+          </span>
         )}
       </div>
     </>

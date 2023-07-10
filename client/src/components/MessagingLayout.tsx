@@ -1,7 +1,7 @@
 import SideBar from "./SideBar";
 import SideBarTop from "./SideBarTop";
 import ChatMessage from "./ChatMessage";
-import ChatWindow from "./ChatWindow";
+import ChatWindow from "./ChatHistory";
 import ChatWindowTop from "./ChatWindowTop";
 import FriendRequests from "./FriendRequests";
 import AccountModal from "./modals/AccountModal";
@@ -32,14 +32,6 @@ export default function MessagingLayout() {
     friendRequestsModal?.click();
   };
 
-  const handleFriendClick = () => {
-    // TODO: update ChatWindow on clicking a friend
-  };
-
-  const handleOnMessageSend = () => {
-    // TODO: sending of message backend and frontend
-  };
-
   return (
     <div className="vh-100 overflow-hidden">
       <ToastContainer
@@ -67,7 +59,7 @@ export default function MessagingLayout() {
             className="overflow-auto col-2 mx-0"
             style={{ position: "absolute", height: "91.5vh", marginTop: "2vh" }}
           >
-            <SideBar onFriendClick={handleFriendClick} />
+            <SideBar />
           </Row>
         </Col>
         <Col className="col-10 mt-2 p-0">
@@ -79,7 +71,7 @@ export default function MessagingLayout() {
               position: "absolute",
               height: "86.5vh",
               width: "83.2%",
-              marginTop: "15px",
+              marginTop: "10px",
               marginLeft: "10px",
             }}
             className="bg-white bg-messages overflow-auto"
@@ -94,7 +86,7 @@ export default function MessagingLayout() {
               marginLeft: "3%",
             }}
           >
-            <ChatMessage onMessageSend={handleOnMessageSend} />
+            <ChatMessage />
           </Row>
         </Col>
       </Row>
