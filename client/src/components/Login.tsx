@@ -36,6 +36,7 @@ export default function Login() {
     onCompleted(data) {
       authDispatch({ type: "LOGIN", payload: data.login });
       navigate("/messaging");
+      location.reload();
     },
   });
 

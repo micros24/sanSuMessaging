@@ -21,6 +21,11 @@ export default function ChatMessage() {
   });
 
   const [sendMessage] = useMutation(SEND_MESSAGE, {
+    onCompleted: () =>
+      setFormData({
+        to: "",
+        content: "",
+      }),
     variables: formData,
   });
 

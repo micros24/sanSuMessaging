@@ -33,7 +33,7 @@ export default function SideBar() {
   const [friends, setFriends] = useState<UserModel[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const {} = useQuery(GET_FRIENDS_QUERY, {
+  useQuery(GET_FRIENDS_QUERY, {
     onError: (error) =>
       alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
@@ -45,7 +45,7 @@ export default function SideBar() {
     },
   });
 
-  const {} = useSubscription(GET_FRIENDS_SUBSCRIPTION, {
+  useSubscription(GET_FRIENDS_SUBSCRIPTION, {
     onError: (error) =>
       alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onData(data) {

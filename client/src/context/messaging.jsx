@@ -10,7 +10,7 @@ const msgReducer = (state, action) => {
         // When action is initiated, it responds with the person you're recipient's details
         // Put the data into a state
         ...state,
-        recipient: action.payload,
+        recipient: action.payload
       };
     default:
       throw new Error(`Unknown action type:  ${action.type}`);

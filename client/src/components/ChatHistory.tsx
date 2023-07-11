@@ -29,14 +29,18 @@ const NEW_MESSAGES_SUBSCRIPTION = gql`
   }
 `;
 
-export default function ChatHistory() {
+interface Props {
+  clearMessageHistory: boolean;
+}
+
+export default function ChatHistory({ clearMessageHistory }: Props) {
   const user = useAuthState().user;
   const currentlyMessaging = useMessagingState().recipient;
   const divRef = useRef<HTMLDivElement>(null);
   const [messageHistory, setMessageHistory] = useState<MessageModel[]>([]);
+
   let from;
   if (currentlyMessaging) {
-    console.log(currentlyMessaging);
     from = currentlyMessaging.email;
   } else {
     from = undefined;
@@ -46,9 +50,25 @@ export default function ChatHistory() {
     if (divRef.current != null) divRef.current.scrollIntoView();
   });
 
-  const {} = useSubscription(NEW_MESSAGES_SUBSCRIPTION, {
-    onError: (error) =>
-      alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+  const { refetch } = useQuery(GET_MESSAGES, {
+    onCompleted(data) {
+      var myArray = Array.from(data.getMessages).reverse();
+      setMessageHistory(myArray);
+    },
+    variables: {
+      from: from,
+    },
+  });
+
+  if (clearMessageHistory === true) {
+    // re-render
+    clearMessageHistory = false;
+    refetch();
+  }
+
+  useSubscription(NEW_MESSAGES_SUBSCRIPTION, {
+    // onError: (error) =>
+    //   alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onData(data) {
       let newMessage = data.data.data.newMessage;
       let temp = [...messageHistory, newMessage];
@@ -57,16 +77,6 @@ export default function ChatHistory() {
     variables: {
       from: from,
       recipient: user.email,
-    },
-  });
-
-  const {} = useQuery(GET_MESSAGES, {
-    onCompleted(data) {
-      var myArray = Array.from(data.getMessages).reverse();
-      setMessageHistory(myArray);
-    },
-    variables: {
-      from: from,
     },
   });
 

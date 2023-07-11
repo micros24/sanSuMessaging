@@ -76,7 +76,7 @@ export default function MessagingLayout() {
             }}
             className="bg-white bg-messages overflow-auto"
           >
-            <ChatWindow />
+            <ChatWindow clearMessageHistory={true} />
           </Row>
           <Row
             style={{
