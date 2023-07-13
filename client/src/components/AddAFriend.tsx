@@ -64,7 +64,7 @@ export default function AddAFriend() {
   };
 
   const handleGoBack = () => {
-    navigate("/messaging"); // Messages
+    window.location.href = "/messaging";
   };
 
   const handleAccountClick = () => {

@@ -82,8 +82,9 @@ export default function AccountModal({ showAddAFriendButton }: Props) {
 
   const handleLogOut = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/");
-    location.reload();
+    window.location.href = "/";
+    // navigate("/");
+    // location.reload();
   };
 
   const handleEditProfileFormSubmit = (e: FormEvent) => {

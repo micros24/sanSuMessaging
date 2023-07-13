@@ -35,8 +35,9 @@ export default function Login() {
     onError: (error) => setErrors(error.graphQLErrors[0].extensions.errors),
     onCompleted(data) {
       authDispatch({ type: "LOGIN", payload: data.login });
-      navigate("/messaging");
-      location.reload();
+      window.location.href = "/messaging";
+      //navigate("/messaging");
+      //location.reload();
     },
   });
 
