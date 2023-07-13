@@ -118,5 +118,21 @@ module.exports = {
         }
       ),
     },
+    newMessageSideBarReorganizer: {
+      subscribe: withFilter(
+        //first parameter
+        (_, __, { user }) => {
+          if (!user) throw new GraphQlError("Unauthenticated");
+          return pubSub.asyncIterator("REORGANIZE_FRIENDS");
+        },
+        //second parameter
+        ({ _, newMessageSideBarReorganizer }, { recipient }) => {
+          if (newMessageSideBarReorganizer.to === recipient) {
+            return true;
+          }
+          return false;
+        }
+      ),
+    },
   },
 };

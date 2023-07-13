@@ -27,20 +27,30 @@ const GET_FRIENDS_SUBSCRIPTION = gql`
   }
 `;
 
+const SIDEBAR_REORGANIZER_SUBSCRIPTION = gql`
+  subscription newMessageSideBarReorganizer($recipient: String!) {
+    newMessageSideBarReorganizer(recipient: $recipient) {
+      to
+      from
+    }
+  }
+`;
+
 export default function SideBar() {
-  const messagingDispatch = useMessagingDispatch();
   const user = useAuthState().user;
+  const messagingDispatch = useMessagingDispatch();
   const [friends, setFriends] = useState<UserModel[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  //friends: UserModel[] = useFriendsState().friends;
 
   useQuery(GET_FRIENDS_QUERY, {
     onError: (error) =>
       alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onCompleted(data) {
-      setFriends(data.getFriends);
       if (data.getFriends[0]) {
-        messagingDispatch({ type: "SET", payload: data.getFriends[0] });
+        setFriends(data.getFriends);
         setSelectedIndex(0);
+        messagingDispatch({ type: "SET", payload: data.getFriends[0] });
       }
     },
   });
@@ -50,8 +60,31 @@ export default function SideBar() {
       alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
     onData(data) {
       let newFriend = data.data.data.newFriend;
-      let temp = [...friends, newFriend];
-      setFriends(temp);
+      let newFriendsList = [...friends, newFriend];
+      setFriends(newFriendsList);
+    },
+    variables: {
+      recipient: user.email,
+    },
+  });
+
+  useSubscription(SIDEBAR_REORGANIZER_SUBSCRIPTION, {
+    // onError: (error) =>
+    //   alert("An error has occured: " + error.graphQLErrors[0].extensions.code),
+    onData(data) {
+      let message = data.data.data.newMessageSideBarReorganizer;
+      let index;
+      friends.forEach((friend, forEachIndex) => {
+        if (friend.email === message.from) index = forEachIndex;
+      });
+
+      var temp = friends;
+
+      delete temp[index];
+      console.log(friends);
+      //console.log(splicedItem);
+      console.log(temp);
+      //temp.unshift();
     },
     variables: {
       recipient: user.email,

@@ -95,5 +95,8 @@ module.exports = `#graphql
         newFriend(
             recipient: String!
         ): UserModel!
+        newMessageSideBarReorganizer(
+            recipient: String!
+        ): MessageModel!
     }
 `;

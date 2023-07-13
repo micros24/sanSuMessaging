@@ -20,6 +20,9 @@ module.exports = async (UserModel, { to, content }, user, pubSub) => {
     });
 
     pubSub.publish("NEW_MESSAGE", { newMessage: message });
+    pubSub.publish("REORGANIZE_FRIENDS", {
+      newMessageSideBarReorganizer: message,
+    });
 
     return message;
   } catch (error) {
