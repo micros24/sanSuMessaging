@@ -1,7 +1,7 @@
 import SideBar from "./SideBar";
 import SideBarTop from "./SideBarTop";
 import ChatMessage from "./ChatMessage";
-import ChatWindow from "./ChatHistory";
+import ChatHistory from "./ChatHistory";
 import ChatWindowTop from "./ChatWindowTop";
 import FriendRequests from "./FriendRequests";
 import AccountModal from "./modals/AccountModal";
@@ -76,7 +76,7 @@ export default function MessagingLayout() {
             }}
             className="bg-white bg-messages overflow-auto"
           >
-            <ChatWindow clearMessageHistory={true} />
+            <ChatHistory clearMessageHistory={true} />
           </Row>
           <Row
             style={{

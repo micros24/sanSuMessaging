@@ -93,13 +93,17 @@ export default function Register() {
 
   return (
     <div className="d-flex justify-content-center">
-      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-trans">
+      <Row
+        className="mt-5 mb-5 p-3 bg-white text-dark bg-trans"
+        style={{ width: "50%" }}
+      >
         <Col>
           <span className="text-center">
             <h1>Registration</h1>
-            Already have an account? <Link to="/">Login here!</Link>
           </span>
-          <p></p>
+          <p className="text-center">
+            Already have an account? <Link to="/">Login here!</Link>
+          </p>
           <Form onSubmit={handleSubmitRegisterForm}>
             <Form.Group className="mb-3" controlId="formsEmailAddress">
               <Form.Label className={errors.email && "text-danger"}>

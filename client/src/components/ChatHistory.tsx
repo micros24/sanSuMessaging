@@ -84,7 +84,7 @@ export default function ChatHistory({ clearMessageHistory }: Props) {
     <div>
       {messageHistory.length !== 0 ? (
         messageHistory.map((message) => (
-          <div key={message.uuid} style={{ fontSize: "24px" }}>
+          <div key={message.uuid} style={{ fontSize: "22px" }}>
             {message.from === currentlyMessaging.email ? (
               // Their messages
               <div className="d-flex justify-content-start text-center p-1">

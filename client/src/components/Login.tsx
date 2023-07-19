@@ -43,7 +43,10 @@ export default function Login() {
 
   return (
     <div className="d-flex justify-content-center">
-      <Row className="mt-5 mb-5 p-3 bg-white text-dark bg-trans">
+      <Row
+        className="mt-5 mb-5 p-3 bg-white text-dark bg-trans"
+        style={{ width: "30%" }}
+      >
         <h1 className="text-center">Login</h1>
         <Form>
           <Form.Group className="mb-3" controlId="formsEmailAddress">
